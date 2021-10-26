@@ -1,0 +1,38 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+buildscript {
+    ext.kotlin_version = "1.5.30"
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath "com.android.tools.build:gradle:7.0.2"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.31"
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+// Define versions in a single place
+ext {
+    // Sdk and Tools
+    min_sdk_version = 21
+    target_sdk_version = 30
+    compile_sdk_version = 30
+
+    recycler_view_version = '1.2.1'
+
+    // Lifecycle
+    lifecycle_version = '2.0.0'
+
+// Dagger
+    dagger_version = '2.21'
+
+//Room
+    room_version = "2.3.0"
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
