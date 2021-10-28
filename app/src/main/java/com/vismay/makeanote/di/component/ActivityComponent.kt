@@ -3,7 +3,7 @@ package com.vismay.makeanote.di.component
 import com.vismay.makeanote.di.ActivityScope
 import com.vismay.makeanote.di.module.ActivityModule
 import com.vismay.makeanote.ui.addnote.AddNoteActivity
-import com.vismay.makeanote.ui.shownote.NotesActivity
+import com.vismay.makeanote.ui.shownotes.NotesActivity
 import dagger.Component
 
 @ActivityScope

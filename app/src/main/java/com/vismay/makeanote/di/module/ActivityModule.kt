@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.vismay.makeanote.data.repository.NoteRepository
 import com.vismay.makeanote.ui.addnote.AddNoteViewModel
 import com.vismay.makeanote.ui.base.BaseActivity
-import com.vismay.makeanote.ui.shownote.NotesActivityViewsModel
+import com.vismay.makeanote.ui.shownotes.NotesActivityViewModel
 import com.vismay.makeanote.utils.ViewModelProviderFactory
 import dagger.Module
 import dagger.Provides
@@ -13,11 +13,11 @@ import dagger.Provides
 class ActivityModule(private val activity: BaseActivity<*>) {
 
     @Provides
-    fun providesNotesActivityViewModel(): NotesActivityViewsModel = ViewModelProviders.of(
-        activity, ViewModelProviderFactory(NotesActivityViewsModel::class) {
-            NotesActivityViewsModel()
+    fun providesNotesActivityViewModel(): NotesActivityViewModel = ViewModelProviders.of(
+        activity, ViewModelProviderFactory(NotesActivityViewModel::class) {
+            NotesActivityViewModel()
             //this lambda creates and return SplashViewModel
-        }).get(NotesActivityViewsModel::class.java)
+        }).get(NotesActivityViewModel::class.java)
 
     @Provides
     fun provideAddNoteViewModel(

@@ -15,6 +15,13 @@
     <dimen name="_22dp">22dp</dimen>
     <dimen name="_24dp">24dp</dimen>
     <dimen name="_26dp">26dp</dimen>
+    <dimen name="_28dp">28dp</dimen>
+    <dimen name="_30dp">30dp</dimen>
+    <dimen name="_32dp">32dp</dimen>
+    <dimen name="_34dp">34dp</dimen>
+    <dimen name="_36dp">36dp</dimen>
+    <dimen name="_386dp">38dp</dimen>
+    <dimen name="_40dp">40dp</dimen>
 
     <!--sp values-->
     <dimen name="_2sp">2sp</dimen>

@@ -20,6 +20,7 @@ abstract class BaseFragment<VM : BaseViewModel> : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         injectDependencies(buildFragmentComponent())
         super.onCreate(savedInstanceState)
+        setupObserver()
         viewModel.onCreate()
     }
 
@@ -45,4 +46,6 @@ abstract class BaseFragment<VM : BaseViewModel> : Fragment() {
     protected abstract fun injectDependencies(fragmentComponent: FragmentComponent)
 
     protected abstract fun setupView(view: View)
+
+    protected abstract fun setupObserver()
 }

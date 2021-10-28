@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MakeANote">
         <activity
-            android:name=".ui.shownote.NotesActivity"
+            android:name=".ui.shownotes.NotesActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
