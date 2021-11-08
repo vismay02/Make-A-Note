@@ -38,7 +38,6 @@ class NotesActivity : BaseActivity<NotesActivityViewModel>() {
         viewModel.launchAddNotes.observe(this, {
             it.getIfNotHandled()?.run {
                 startActivity(Intent(applicationContext, AddNoteActivity::class.java))
-                finish()
             }
         })
     }

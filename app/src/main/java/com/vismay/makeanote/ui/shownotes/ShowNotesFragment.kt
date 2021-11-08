@@ -40,10 +40,10 @@ class ShowNotesFragment : BaseFragment<ShowNotesViewModel>() {
         notesRecyclerView.apply {
             layoutManager = linearLayoutManager
             adapter = noteAdapter
+
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
-                    Log.d(TAG, "onScrolled: ")
                 }
             })
 

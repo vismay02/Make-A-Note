@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 
 abstract class BaseItemViewModel<T : Any> : BaseViewModel() {
 
-    val data = MutableLiveData<T>()
+    val data: MutableLiveData<T> = MutableLiveData<T>()
 
     fun onManuallyCleared() = onCleared()
 

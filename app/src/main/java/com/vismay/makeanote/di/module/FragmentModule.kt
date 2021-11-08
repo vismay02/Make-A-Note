@@ -15,7 +15,6 @@ import dagger.Provides
 class FragmentModule(private val fragment: BaseFragment<*>) {
 
     @Provides
-    @FragmentScope
     fun providePostAdapter() = NoteAdapter(fragment.lifecycle, ArrayList())
 
     @Provides

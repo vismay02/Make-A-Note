@@ -39,6 +39,10 @@ abstract class BaseFragment<VM : BaseViewModel> : Fragment() {
             .fragmentModule(FragmentModule(this))
             .build()
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupView(view)
+    }
 
     @LayoutRes
     protected abstract fun provideLayoutId(): Int

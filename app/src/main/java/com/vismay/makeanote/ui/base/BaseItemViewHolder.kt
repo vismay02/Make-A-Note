@@ -1,6 +1,5 @@
 package com.vismay.makeanote.ui.base
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +12,6 @@ import com.vismay.makeanote.MakeANoteApplication
 import com.vismay.makeanote.di.component.DaggerViewHolderComponent
 import com.vismay.makeanote.di.component.ViewHolderComponent
 import com.vismay.makeanote.di.module.ViewHolderModule
-import com.vismay.makeanote.ui.shownotes.ShowNotesFragment
 import javax.inject.Inject
 
 abstract class BaseItemViewHolder<T : Any, VM : BaseItemViewModel<T>>(
@@ -23,7 +21,6 @@ abstract class BaseItemViewHolder<T : Any, VM : BaseItemViewModel<T>>(
     LifecycleOwner {
 
     init {
-        Log.d(ShowNotesFragment.TAG, "init BaseItemViewHolder:")
         onCreate()
     }
 

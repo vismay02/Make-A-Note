@@ -10,7 +10,9 @@ class NoteAdapter(
     notes: ArrayList<NoteEntity>
 ) : BaseAdapter<NoteEntity, NoteViewHolder>(parentLifecycle, notes) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = NoteViewHolder(parent)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder {
+        return NoteViewHolder(parent)
+    }
 
 
 }

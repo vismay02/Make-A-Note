@@ -1,12 +1,10 @@
 package com.vismay.makeanote.ui.base
 
-import android.util.Log
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.vismay.makeanote.ui.shownotes.ShowNotesFragment
 
 abstract class BaseAdapter<T : Any, VH : BaseItemViewHolder<T, out BaseItemViewModel<T>>>(
     parentLifecycle: Lifecycle,
@@ -16,7 +14,6 @@ abstract class BaseAdapter<T : Any, VH : BaseItemViewHolder<T, out BaseItemViewM
     private var recyclerView: RecyclerView? = null
 
     init {
-        Log.d(ShowNotesFragment.TAG, "init dataList: $dataList")
         parentLifecycle.addObserver(object : LifecycleObserver {
 
             @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
@@ -69,33 +66,28 @@ abstract class BaseAdapter<T : Any, VH : BaseItemViewHolder<T, out BaseItemViewM
 
     override fun onViewAttachedToWindow(holder: VH) {
         super.onViewAttachedToWindow(holder)
-        Log.d(ShowNotesFragment.TAG, "onViewAttachedToWindow: $holder")
         holder.onStart()
     }
 
     override fun onViewDetachedFromWindow(holder: VH) {
         super.onViewDetachedFromWindow(holder)
-        Log.d(ShowNotesFragment.TAG, "onViewDetachedFromWindow: $holder")
         holder.onStop()
-    }
-
-    override fun getItemCount(): Int = dataList.size
-
-    override fun onBindViewHolder(holder: VH, position: Int) {
-        Log.d(ShowNotesFragment.TAG, "onBindViewHolder: $holder")
-        holder.bind(dataList[position])
     }
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
-        Log.d(ShowNotesFragment.TAG, "onAttachedToRecyclerView: ")
         this.recyclerView = recyclerView
     }
 
     override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
         super.onDetachedFromRecyclerView(recyclerView)
-        Log.d(ShowNotesFragment.TAG, "onDetachedFromRecyclerView: ")
         this.recyclerView = null
+    }
+
+    override fun getItemCount(): Int = dataList.size
+
+    override fun onBindViewHolder(holder: VH, position: Int) {
+        holder.bind(dataList[position])
     }
 
     fun appendData(dataList: List<T>) {
