@@ -6,8 +6,9 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:7.0.2"
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.31"
+        classpath 'com.android.tools.build:gradle:7.2.1'
+        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.0'
+        classpath("com.google.dagger:hilt-android-gradle-plugin:2.38.1")
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -18,19 +19,16 @@ buildscript {
 ext {
     // Sdk and Tools
     min_sdk_version = 21
-    target_sdk_version = 30
-    compile_sdk_version = 30
+    target_sdk_version = 32
+    compile_sdk_version = 32
 
     recycler_view_version = '1.2.1'
-
     // Lifecycle
-    lifecycle_version = '2.0.0'
-
-// Dagger
-    dagger_version = '2.21'
-
-//Room
-    room_version = "2.3.0"
+    lifecycle_version = '2.2.0'
+    //Room
+    room_version = "2.4.3"
+    //Hilt
+    hilt_version = "2.42"
 }
 
 task clean(type: Delete) {
