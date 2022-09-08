@@ -11,6 +11,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MakeANote">
         <activity
+            android:name="com.vismay.makeanote.ui.createupdatenote.CreateUpdateNoteActivity"
+            android:exported="false" />
+        <activity
             android:name="com.vismay.makeanote.ui.notes.MainActivity"
             android:exported="true">
             <intent-filter>

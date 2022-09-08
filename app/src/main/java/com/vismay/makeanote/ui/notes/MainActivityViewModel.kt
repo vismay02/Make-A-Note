@@ -18,7 +18,7 @@ class MainActivityViewModel @Inject constructor(
     private val _getNotes = MutableLiveData<List<NoteEntity>>()
     val getNotes = _getNotes as LiveData<List<NoteEntity>>
 
-    fun getAllNotes() {
+     fun getAllNotes() {
         viewModelScope.launch {
             _getNotes.postValue(noteRepository.getNotes())
         }

@@ -11,7 +11,7 @@ import javax.inject.Singleton
 @Singleton
 @Database(entities = [NoteEntity::class], exportSchema = false, version = 1)
 @TypeConverters(DateTypeConverter::class)
-abstract class DatabaseService : RoomDatabase() {
+abstract class  DatabaseService : RoomDatabase() {
 
     abstract fun NoteDao(): NoteDao
 }
