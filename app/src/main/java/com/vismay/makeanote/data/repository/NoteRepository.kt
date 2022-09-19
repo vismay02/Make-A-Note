@@ -1,6 +1,5 @@
 package com.vismay.makeanote.data.repository
 
-import androidx.lifecycle.LiveData
 import com.vismay.makeanote.data.local.db.entity.NoteEntity
 import javax.inject.Singleton
 
@@ -8,5 +7,7 @@ import javax.inject.Singleton
 interface NoteRepository {
 
     suspend fun getNotes(): List<NoteEntity>
+
+    suspend fun saveNote(note: NoteEntity)
 
 }

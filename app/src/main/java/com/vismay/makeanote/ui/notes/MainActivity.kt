@@ -22,11 +22,15 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel>() 
             launchActivity<CreateUpdateNoteActivity>()
         }
 
-        viewModel.getAllNotes()
-
         viewModel.getNotes.observe(this) { notes ->
-            //TODO: Add notes to recycler view
+            mViewBinding.notesRecycler.adapter = NotesAdapter(notes)
+
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.getAllNotes()
     }
 
 

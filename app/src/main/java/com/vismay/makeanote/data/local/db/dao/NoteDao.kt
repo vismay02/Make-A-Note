@@ -9,11 +9,11 @@ interface NoteDao {
     suspend fun getAllNotes(): List<NoteEntity>
 
     @Insert
-    suspend fun insertNote(users: NoteEntity)
+    suspend fun insertNote(note: NoteEntity)
 
     @Delete
-    suspend fun deleteNote(user: NoteEntity)
+    suspend fun deleteNote(note: NoteEntity)
 
     @Update
-    suspend fun updateNote(user: NoteEntity)
+    suspend fun updateNote(note: NoteEntity)
 }

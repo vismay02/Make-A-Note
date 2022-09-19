@@ -12,4 +12,12 @@ class NoteRepositoryImpl @Inject constructor(private val noteDao: NoteDao) : Not
         withContext(Dispatchers.IO) {
             noteDao.getAllNotes()
         }
+
+    override suspend fun saveNote(note: NoteEntity) {
+        withContext(Dispatchers.IO) {
+            noteDao.insertNote(note = note)
+        }
+    }
+
+
 }

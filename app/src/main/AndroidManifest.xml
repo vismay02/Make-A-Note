@@ -12,7 +12,8 @@
         android:theme="@style/Theme.MakeANote">
         <activity
             android:name="com.vismay.makeanote.ui.createupdatenote.CreateUpdateNoteActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name="com.vismay.makeanote.ui.notes.MainActivity"
             android:exported="true">
