@@ -1,7 +1,5 @@
 package com.vismay.makeanote.ui.createupdatenote
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.vismay.makeanote.data.local.db.entity.NoteEntity
 import com.vismay.makeanote.data.repository.NoteRepository
@@ -15,13 +13,20 @@ class CreateUpdateViewModel @Inject constructor(
     private var noteRepository: NoteRepository
 ) : BaseViewModel() {
 
-    fun save(title: String, description: String) {
+    fun save(note: String) {
         viewModelScope.launch {
             noteRepository.saveNote(
                 note =
-                NoteEntity(
-                    title = title, description = description, date = ""
-                )
+                NoteEntity(note = note, date = "")
+            )
+        }
+    }
+
+    fun update(id: Int, note: String) {
+        viewModelScope.launch {
+            noteRepository.updateNote(
+                note =
+                NoteEntity(id = id, note = note, date = "")
             )
         }
     }

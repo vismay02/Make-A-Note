@@ -8,7 +8,10 @@ import com.vismay.makeanote.R
 import com.vismay.makeanote.data.local.db.entity.NoteEntity
 import kotlinx.android.synthetic.main.notes_item_view.view.*
 
-class NotesAdapter(private val notes: List<NoteEntity>) :
+class NotesAdapter(
+    private val notes: List<NoteEntity>,
+    private val onItemClick: (Pair<NoteEntity, Boolean>) -> Unit
+) :
     RecyclerView.Adapter<NotesAdapter.ItemHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemHolder =
@@ -16,16 +19,33 @@ class NotesAdapter(private val notes: List<NoteEntity>) :
 
     override fun onBindViewHolder(holder: ItemHolder, position: Int) {
         val item = notes[position]
-        holder.bind(item)
+        holder.bind(item, onItemClick)
     }
 
     override fun getItemCount(): Int = notes.size
 
     class ItemHolder private constructor(private var view: View) : RecyclerView.ViewHolder(view) {
 
-        fun bind(item: NoteEntity) {
-            view.text_title.text = item.title
-            view.text_description.text = item.description
+        fun bind(item: NoteEntity, onItemClick: (Pair<NoteEntity, Boolean>) -> Unit) {
+            view.setOnClickListener {
+                onItemClick(Pair(item, false))
+            }
+            view.setOnLongClickListener {
+                onItemClick(Pair(item, true))
+                return@setOnLongClickListener true
+            }
+            var title = ""
+            var description = ""
+            item.note?.run {
+                if (length > 65) {
+                    title = substring(0, 65)
+                    description = substring(65, length)
+                } else {
+                    title = this
+                }
+            }
+            view.text_title.text = title
+            view.text_description.text = description
         }
 
         companion object {

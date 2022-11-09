@@ -1,7 +1,10 @@
 <resources>
-    <string name="app_name">Make A Note</string>
+    <string name="app_name">MakeANote</string>
 
     <string name="create_note">Create</string>
     <string name="new_note">New Note</string>
     <string name="save_and_back">Press back again to save &amp; exit</string>
+    <string name="delete_all">Delete</string>
+    <string name="cancel_all">Cancel</string>
+    <string name="delete_message">Delete Note?</string>
 </resources>

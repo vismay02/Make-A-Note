@@ -19,5 +19,17 @@ class NoteRepositoryImpl @Inject constructor(private val noteDao: NoteDao) : Not
         }
     }
 
+    override suspend fun updateNote(note: NoteEntity) {
+        withContext(Dispatchers.IO) {
+            noteDao.updateNote(note = note)
+        }
+    }
+
+    override suspend fun deleteNote(note: NoteEntity) {
+        withContext(Dispatchers.IO){
+            noteDao.deleteNote(note = note)
+        }
+    }
+
 
 }
