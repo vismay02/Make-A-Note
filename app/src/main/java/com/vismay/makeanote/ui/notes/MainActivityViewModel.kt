@@ -15,6 +15,7 @@ class MainActivityViewModel @Inject constructor(
     private val noteRepository: NoteRepository,
 ) : BaseViewModel() {
 
+    /*Helps in hiding mutable types*/
     private val _getNotes = MutableLiveData<List<NoteEntity>>()
     val getNotes = _getNotes as LiveData<List<NoteEntity>>
 

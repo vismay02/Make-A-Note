@@ -14,6 +14,8 @@ import com.vismay.makeanote.utils.Constants.KEY_NOTE_BUNDLE
 import com.vismay.makeanote.utils.Utils
 import dagger.hilt.android.AndroidEntryPoint
 
+const val IDENTITY_CHAR = "(%@)"
+
 @AndroidEntryPoint
 class CreateUpdateNoteActivity :
     BaseActivity<ActivityCreateUpdateNoteBinding, CreateUpdateViewModel>() {
@@ -21,10 +23,9 @@ class CreateUpdateNoteActivity :
     private var pressedTime = 0L
     override val viewModel: CreateUpdateViewModel by viewModels()
     private var noteExtra: NoteEntity? = null
-    private var noteString = ""
-    private val builder by lazy {
-        StringBuilder()
-    }
+    private var noteString: StringBuilder = StringBuilder("")
+    private var isEnterPressed = false
+
 
     override fun getBinding(): ActivityCreateUpdateNoteBinding =
         ActivityCreateUpdateNoteBinding.inflate(layoutInflater)
@@ -35,7 +36,7 @@ class CreateUpdateNoteActivity :
 
         noteExtra?.let { note ->
             note.note?.let {
-                noteString = it
+                noteString.append(it)
                 showNote(it)
             }
         }
@@ -43,11 +44,13 @@ class CreateUpdateNoteActivity :
         mViewBinding.edittextNote.setOnKeyListener { v, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN) {
                 Log.d("TAG", "Enter pressed!")
-                noteString.trim()
-                noteString = "$noteString %n"
-                builder.append(" %n")
-                Log.d("TAG", "builder: $builder")
-
+                isEnterPressed = true
+                noteString.append(
+                    "${
+                        mViewBinding.edittextNote.text.toString().trim()
+                    } $IDENTITY_CHAR "
+                )
+                Log.d("TAG", "noteString: $noteString")
             }
             false
         }
@@ -63,26 +66,34 @@ class CreateUpdateNoteActivity :
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                builder.clear()
-                builder.append(s.toString())
-                Log.d("TAG", "onTextChanged: $builder")
+                /*if (noteString.contains(IDENTITY_CHAR) && isEnterPressed) {
+                    isEnterPressed = false
+//                    Log.d("TAG", "contains enter: $noteString")
+                    noteString.clear()
+                    noteString.append("${s.toString()} $IDENTITY_CHAR")
+                } else {
+                    noteString.clear()
+                    noteString.append(s.toString())
+                }*/
+
+//                Log.d("TAG", "onTextChanged: $noteString")
             }
 
             override fun afterTextChanged(editable: Editable?) {
-
-
+//                Log.d("TAG", "afterTextChanged: ${editable.toString()}")
             }
         })
     }
 
     override fun onBackPressed() {
-        Log.d("TAG", "builder: $builder")
+        Log.d("TAG", "onBackPressed noteString: $noteString")
+        if (noteString.contains(IDENTITY_CHAR))
         if (pressedTime + 2000 > System.currentTimeMillis()) {
             super.onBackPressed()
 
             noteExtra?.let { note ->
-                viewModel.update(note.id, noteString)
-            } ?: viewModel.save(noteString)
+                viewModel.update(note.id, noteString.toString())
+            } ?: viewModel.save(noteString.toString())
 
             finish()
         } else {

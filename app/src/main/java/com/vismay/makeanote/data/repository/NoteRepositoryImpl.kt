@@ -2,34 +2,41 @@ package com.vismay.makeanote.data.repository
 
 import com.vismay.makeanote.data.local.db.dao.NoteDao
 import com.vismay.makeanote.data.local.db.entity.NoteEntity
-import kotlinx.coroutines.Dispatchers
+import com.vismay.makeanote.di.module.IoDispatcher
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class NoteRepositoryImpl @Inject constructor(private val noteDao: NoteDao) : NoteRepository {
+/*Injecting Dispatcher will make this class more testable as we can pass a TestDispatcher while writing
+*  unit and instrumentation testing.*/
+class NoteRepositoryImpl @Inject constructor(
+    private val noteDao: NoteDao,
+    @IoDispatcher private val dispatcher: CoroutineDispatcher
+) : NoteRepository {
 
+    /*Suspend functions should be safe to call from the main thread.
+    * Moving the execution off the main thread using withContext.
+    * Now, any class calling getNotes() doesn't have to bother about being main-safe.*/
     override suspend fun getNotes(): List<NoteEntity> =
-        withContext(Dispatchers.IO) {
+        withContext(dispatcher) {
             noteDao.getAllNotes()
         }
 
     override suspend fun saveNote(note: NoteEntity) {
-        withContext(Dispatchers.IO) {
+        withContext(dispatcher) {
             noteDao.insertNote(note = note)
         }
     }
 
     override suspend fun updateNote(note: NoteEntity) {
-        withContext(Dispatchers.IO) {
+        withContext(dispatcher) {
             noteDao.updateNote(note = note)
         }
     }
 
     override suspend fun deleteNote(note: NoteEntity) {
-        withContext(Dispatchers.IO){
+        withContext(dispatcher) {
             noteDao.deleteNote(note = note)
         }
     }
-
-
 }
