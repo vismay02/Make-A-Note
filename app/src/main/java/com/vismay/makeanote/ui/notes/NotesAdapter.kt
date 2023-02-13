@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.vismay.makeanote.R
 import com.vismay.makeanote.data.local.db.entity.NoteEntity
+import com.vismay.makeanote.utils.Constants
 import kotlinx.android.synthetic.main.notes_item_view.view.*
 
 class NotesAdapter(
@@ -37,11 +38,18 @@ class NotesAdapter(
             var title = ""
             var description = ""
             item.note?.run {
-                if (length > 65) {
-                    title = substring(0, 65)
-                    description = substring(65, length)
+                val indexOfNewLine = indexOf(Constants.SPECIAL_CHAR, 0)
+                if (indexOfNewLine == -1) {
+                    if (length > 65) {
+                        title = substring(0, 65)
+                        description = substring(65, length)
+                    } else {
+                        title = this
+                    }
                 } else {
-                    title = this
+                    title = substring(0, indexOfNewLine).replace(Constants.SPECIAL_CHAR, "\n")
+                    description =
+                        substring(indexOfNewLine, length).replace(Constants.SPECIAL_CHAR, "")
                 }
             }
             view.text_title.text = title

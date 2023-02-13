@@ -29,7 +29,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel>() 
         viewModel.getNotes.observe(this) { notes ->
             mViewBinding.notesRecycler.adapter = NotesAdapter(notes) { noteClick ->
                 if (noteClick.second) {
-                    Log.d("TAG", "Long pressed: ${noteClick.first.note}")
                     this@MainActivity.showDeleteDialog { isDeleteClicked ->
                         if (isDeleteClicked)
                             viewModel.deleteNote(noteClick.first)
@@ -43,6 +42,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel>() 
     }
 
     private fun showNoteInDetail(note: NoteEntity? = null) {
+        Log.d("TAG","${note?.note}")
         launchActivity<CreateUpdateNoteActivity> {
             putExtra(KEY_NOTE_BUNDLE, note)
         }
