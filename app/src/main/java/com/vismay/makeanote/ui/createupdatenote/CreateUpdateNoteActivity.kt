@@ -40,7 +40,8 @@ class CreateUpdateNoteActivity :
     }
 
     override fun onBackPressed() {
-        val updatedString = mViewBinding.edittextNote.text.toString().replace("\n", SPECIAL_CHAR)
+        val updatedString =
+            mViewBinding.edittextNote.text.toString().trim().replace("\n", SPECIAL_CHAR)
         if (pressedTime + 2000 > System.currentTimeMillis()) {
             super.onBackPressed()
 

@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginVertical="@dimen/_10dp"
+    android:id="@+id/constraint_layout_note_root"
     android:background="@drawable/rounded_rectangle"
     android:paddingVertical="@dimen/_10dp">
 
