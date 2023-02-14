@@ -11,7 +11,6 @@ import com.vismay.makeanote.utils.Constants.SPECIAL_CHAR
 import com.vismay.makeanote.utils.Utils
 import dagger.hilt.android.AndroidEntryPoint
 
-
 @AndroidEntryPoint
 class CreateUpdateNoteActivity :
     BaseActivity<ActivityCreateUpdateNoteBinding, CreateUpdateViewModel>() {
@@ -42,6 +41,12 @@ class CreateUpdateNoteActivity :
     override fun onBackPressed() {
         val updatedString =
             mViewBinding.edittextNote.text.toString().trim().replace("\n", SPECIAL_CHAR)
+
+        if (updatedString.isNullOrEmpty()) {
+            finish()
+            return
+        }
+
         if (pressedTime + 2000 > System.currentTimeMillis()) {
             super.onBackPressed()
 

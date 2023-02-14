@@ -1,7 +1,6 @@
 package com.vismay.makeanote.ui.notes
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.viewModels
 import com.vismay.makeanote.data.local.db.entity.NoteEntity
 import com.vismay.makeanote.databinding.ActivityMainBinding
@@ -42,7 +41,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel>() 
     }
 
     private fun showNoteInDetail(note: NoteEntity? = null) {
-        Log.d("TAG","${note?.note}")
         launchActivity<CreateUpdateNoteActivity> {
             putExtra(KEY_NOTE_BUNDLE, note)
         }

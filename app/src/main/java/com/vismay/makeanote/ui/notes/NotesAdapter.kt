@@ -34,9 +34,10 @@ class NotesAdapter(
         fun bind(item: NoteEntity, onItemClick: (Pair<NoteEntity, Boolean>) -> Unit) {
             var title = ""
             var description = ""
+            /*Put this logic inside a helper/extension function.*/
             item.note?.run {
-                val indexOfNewLine = indexOf(Constants.SPECIAL_CHAR, 0)
-                if (indexOfNewLine == -1) {
+                val indexOfSpecialChar = indexOf(Constants.SPECIAL_CHAR, 0)
+                if (indexOfSpecialChar == -1) {
                     if (length > 65) {
                         title = substring(0, 65)
                         description = substring(65, length)
@@ -44,9 +45,9 @@ class NotesAdapter(
                         title = this
                     }
                 } else {
-                    title = substring(0, indexOfNewLine).replace(Constants.SPECIAL_CHAR, "\n")
+                    title = substring(0, indexOfSpecialChar)
                     description =
-                        substring(indexOfNewLine, length).replace(Constants.SPECIAL_CHAR, "")
+                        substring(indexOfSpecialChar, length).replace(Constants.SPECIAL_CHAR, "")
                 }
             }
             binding.run {

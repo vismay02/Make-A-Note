@@ -6,23 +6,32 @@
     android:layout_height="match_parent"
     tools:context=".ui.createupdatenote.CreateUpdateNoteActivity">
 
-    <com.google.android.material.textfield.TextInputLayout
+    <include
+        android:id="@+id/include_toolbar_createupdate"
+        layout="@layout/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         app:boxStrokeWidth="0dp"
         app:boxStrokeWidthFocused="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/include_toolbar_createupdate">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edittext_note"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/black"
             android:gravity="top"
-            android:textColor="@color/white"
-            android:background="@color/black"/>
+            android:textColor="@color/white" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
