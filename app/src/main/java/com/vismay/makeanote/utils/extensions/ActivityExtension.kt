@@ -3,8 +3,13 @@ package com.vismay.makeanote.utils.extensions
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
-import com.vismay.makeanote.R
+import androidx.appcompat.app.AppCompatActivity
+import kotlinx.android.synthetic.main.dialog_alert.*
+
 
 object ActivityExtension {
 
@@ -20,25 +25,23 @@ object ActivityExtension {
     inline fun <reified T : Any> newIntent(context: Context): Intent =
         Intent(context, T::class.java)
 
-    fun Context.showDeleteDialog(onDeleteClick: (Boolean) -> Unit) {
+    fun AppCompatActivity.showDeleteDialog(onDeleteClick: (Boolean) -> Unit) {
         this.let {
             val builder = AlertDialog.Builder(it)
-            builder.apply {
-                setPositiveButton(
-                    R.string.delete_all
-                ) { dialog, id ->
-                    onDeleteClick(true)
-                    dialog.dismiss()
-                }
-                setNegativeButton(
-                    R.string.cancel_all
-                ) { dialog, id ->
-                    dialog.dismiss()
-                }
+            val viewGroup: ViewGroup = it.findViewById(android.R.id.content)
+            val dialogView: View =
+                LayoutInflater.from(it)
+                    .inflate(com.vismay.makeanote.R.layout.dialog_alert, viewGroup, false)
+            builder.setView(dialogView)
+            val alertDialog = builder.create()
+            alertDialog.show()
+            alertDialog.button_positive.setOnClickListener {
+                onDeleteClick(true)
+                alertDialog.dismiss()
             }
-            builder.setMessage(R.string.delete_message)
-            builder.create()
-            builder.show()
+            alertDialog.button_negative.setOnClickListener {
+                alertDialog.dismiss()
+            }
         }
     }
 }

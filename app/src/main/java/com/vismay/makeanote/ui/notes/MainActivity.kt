@@ -28,9 +28,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel>() 
         viewModel.getNotes.observe(this) { notes ->
             mViewBinding.notesRecycler.adapter = NotesAdapter(notes) { noteClick ->
                 if (noteClick.second) {
-                    this@MainActivity.showDeleteDialog { isDeleteClicked ->
-                        if (isDeleteClicked)
-                            viewModel.deleteNote(noteClick.first)
+                    showDeleteDialog() {
+                        viewModel.deleteNote(noteClick.first)
                     }
                     return@NotesAdapter
                 }
@@ -50,6 +49,4 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel>() 
         super.onResume()
         viewModel.getAllNotes()
     }
-
-
 }
