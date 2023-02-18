@@ -20,6 +20,7 @@
         android:id="@+id/notesRecycler"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:overScrollMode="never"
         android:paddingHorizontal="@dimen/_10dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"

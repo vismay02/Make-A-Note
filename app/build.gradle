@@ -21,6 +21,12 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    kapt {
+        arguments {
+            arg("room.schemaLocation", "$projectDir/schemas")
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -80,7 +86,7 @@ dependencies {
     implementation("com.google.dagger:hilt-android:$hilt_version")
     kapt("com.google.dagger:hilt-android-compiler:$hilt_version")
 
-    coreLibraryDesugaring'com.android.tools:desugar_jdk_libs:1.1.6'
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.6'
 
     implementation platform('com.google.firebase:firebase-bom:31.2.2')
     implementation 'com.google.firebase:firebase-crashlytics-ktx'
