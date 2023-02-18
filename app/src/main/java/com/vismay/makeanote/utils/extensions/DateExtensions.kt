@@ -5,9 +5,16 @@ import java.util.*
 
 object DateExtensions {
 
-    fun getDate(): String {
-        val sdf = SimpleDateFormat("dd/M/yyyy", Locale.getDefault())
+    fun getCurrentDate(): String {
+        val sdf = SimpleDateFormat("dd/M/yyyy hh:mm a", Locale.getDefault())
         return sdf.format(Date())
     }
 
+    fun String.getFormattedDate(): String {
+        return if (getCurrentDate().substringBefore(" ") == this.substringBefore(" ")) {
+            this.substringAfter(" ")
+        } else {
+            this.substringBefore(" ")
+        }
+    }
 }

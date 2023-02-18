@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.vismay.makeanote.data.local.db.entity.NoteEntity
 import com.vismay.makeanote.databinding.NotesItemViewBinding
 import com.vismay.makeanote.utils.Constants
+import com.vismay.makeanote.utils.extensions.DateExtensions.getFormattedDate
 
 class NotesAdapter(
     private val notes: List<NoteEntity>,
@@ -60,6 +61,7 @@ class NotesAdapter(
                 }
                 textTitle.text = title
                 textDescription.text = description
+                textDateTime.text = item.date?.getFormattedDate()
             }
         }
     }

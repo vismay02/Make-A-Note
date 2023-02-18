@@ -41,7 +41,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_12dp"
-        android:layout_marginEnd="@dimen/_24dp"
         android:layout_marginBottom="@dimen/_8dp"
         android:background="@null"
         android:fontFamily="@font/opensans_semibold"

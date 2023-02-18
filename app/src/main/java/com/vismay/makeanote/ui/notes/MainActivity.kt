@@ -2,13 +2,14 @@ package com.vismay.makeanote.ui.notes
 
 import android.os.Bundle
 import androidx.activity.viewModels
+import com.vismay.makeanote.R
 import com.vismay.makeanote.data.local.db.entity.NoteEntity
 import com.vismay.makeanote.databinding.ActivityMainBinding
 import com.vismay.makeanote.ui.base.BaseActivity
 import com.vismay.makeanote.ui.createupdatenote.CreateUpdateNoteActivity
 import com.vismay.makeanote.utils.Constants.KEY_NOTE_BUNDLE
 import com.vismay.makeanote.utils.extensions.ActivityExtension.launchActivity
-import com.vismay.makeanote.utils.extensions.ActivityExtension.showDeleteDialog
+import com.vismay.makeanote.utils.extensions.ActivityExtension.showAlertDialog
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -28,7 +29,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel>() 
         viewModel.getNotes.observe(this) { notes ->
             mViewBinding.notesRecycler.adapter = NotesAdapter(notes) { noteClick ->
                 if (noteClick.second) {
-                    showDeleteDialog() {
+                    showAlertDialog(R.layout.dialog_alert) {
                         viewModel.deleteNote(noteClick.first)
                     }
                     return@NotesAdapter

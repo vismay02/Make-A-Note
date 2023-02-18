@@ -13,7 +13,7 @@
         <activity
             android:name="com.vismay.makeanote.ui.createupdatenote.CreateUpdateNoteActivity"
             android:exported="false"
-            android:windowSoftInputMode="adjustResize"/>
+            android:windowSoftInputMode="adjustResize|stateVisible" />
         <activity
             android:name="com.vismay.makeanote.ui.notes.MainActivity"
             android:exported="true">
