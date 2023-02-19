@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
 import kotlinx.android.synthetic.main.dialog_alert.*
 
 
@@ -48,4 +50,13 @@ object ActivityExtension {
             }
         }
     }
+
+    fun AppCompatActivity.showKeyboard() =
+        WindowCompat.getInsetsController(window, window.decorView).show(
+            WindowInsetsCompat.Type.ime()
+        )
+
+    fun AppCompatActivity.hideKeyboard() =
+        WindowCompat.getInsetsController(window, window.decorView)
+            .hide(WindowInsetsCompat.Type.ime())
 }

@@ -29,10 +29,13 @@
             android:id="@+id/edittext_note"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:autoLink="all"
             android:background="@color/black"
             android:fontFamily="@font/opensans_regular"
             android:gravity="top"
-            android:textColor="@color/white" />
+            android:linksClickable="true"
+            android:textColor="@color/white"
+            android:textColorLink="@color/azure" />
 
     </com.google.android.material.textfield.TextInputLayout>
 

@@ -1,6 +1,7 @@
 package com.vismay.makeanote.data.repository
 
 import com.vismay.makeanote.data.local.db.dao.NoteDao
+import com.vismay.makeanote.data.local.db.entity.LaunchWithMatchInfo
 import com.vismay.makeanote.data.local.db.entity.NoteEntity
 import com.vismay.makeanote.di.module.IoDispatcher
 import kotlinx.coroutines.CoroutineDispatcher
@@ -39,4 +40,15 @@ class NoteRepositoryImpl @Inject constructor(
             noteDao.deleteNote(note = note)
         }
     }
+
+    override suspend fun search(query: String): List<NoteEntity> =
+        withContext(dispatcher) {
+            noteDao.search(query)
+        }
+
+
+    override suspend fun searchWithMatchInfo(query: String): List<LaunchWithMatchInfo> =
+        withContext(dispatcher) {
+            noteDao.searchWithMatchInfo(query)
+        }
 }

@@ -16,7 +16,8 @@
             android:windowSoftInputMode="adjustResize|stateVisible" />
         <activity
             android:name="com.vismay.makeanote.ui.notes.MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

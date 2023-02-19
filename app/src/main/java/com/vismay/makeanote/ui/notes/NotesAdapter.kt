@@ -9,7 +9,7 @@ import com.vismay.makeanote.utils.Constants
 import com.vismay.makeanote.utils.extensions.DateExtensions.getFormattedDate
 
 class NotesAdapter(
-    private val notes: List<NoteEntity>,
+    private val notes: MutableList<NoteEntity>,
     private val onItemClick: (Pair<NoteEntity, Boolean>) -> Unit
 ) : RecyclerView.Adapter<NotesAdapter.NoteItemHolder>() {
 
@@ -28,6 +28,13 @@ class NotesAdapter(
     }
 
     override fun getItemCount(): Int = notes.size
+
+    fun updateAdapter(notes: List<NoteEntity>) {
+        /*FIXME: This should be called only once when the activity is created.*/
+        this.notes.clear()
+        this.notes.addAll(notes)
+        notifyDataSetChanged()
+    }
 
     class NoteItemHolder(private var binding: NotesItemViewBinding) :
         RecyclerView.ViewHolder(binding.root) {

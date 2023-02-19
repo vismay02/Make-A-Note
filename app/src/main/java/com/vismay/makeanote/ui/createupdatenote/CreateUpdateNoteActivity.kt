@@ -16,7 +16,7 @@ class CreateUpdateNoteActivity :
 
     override val viewModel: CreateUpdateViewModel by viewModels()
     private var noteExtra: NoteEntity? = null
-    private lateinit var noteText: String
+    private var noteText: String? = null
 
     override fun getBinding(): ActivityCreateUpdateNoteBinding =
         ActivityCreateUpdateNoteBinding.inflate(layoutInflater)

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MakeANote</string>
+    <string name="app_name">MakeNote</string>
 
     <string name="create_note">Create</string>
     <string name="new_note">New Note</string>
@@ -8,4 +8,5 @@
     <string name="all_cancel">Cancel</string>
     <string name="delete_message">Delete Note?</string>
     <string name="unable_delete_message">Unable to delete the note.</string>
+    <string name="all_hint_search">Search</string>
 </resources>

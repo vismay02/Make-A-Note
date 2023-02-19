@@ -1,8 +1,10 @@
 package com.vismay.makeanote.ui.notes
 
+import android.text.Editable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.vismay.makeanote.data.local.db.calculateScore
 import com.vismay.makeanote.data.local.db.entity.NoteEntity
 import com.vismay.makeanote.data.repository.NoteRepository
 import com.vismay.makeanote.ui.base.BaseViewModel
@@ -14,6 +16,9 @@ import javax.inject.Inject
 class MainActivityViewModel @Inject constructor(
     private val noteRepository: NoteRepository,
 ) : BaseViewModel() {
+
+    private val _searchResults = MutableLiveData<List<NoteEntity>>()
+    val searchResults = _searchResults as LiveData<List<NoteEntity>>
 
     /*Helps in hiding mutable types*/
     private val _getNotes = MutableLiveData<List<NoteEntity>>()
@@ -28,7 +33,36 @@ class MainActivityViewModel @Inject constructor(
     fun deleteNote(note: NoteEntity) {
         viewModelScope.launch {
             noteRepository.deleteNote(note)
-            getAllNotes()
+        }
+    }
+
+    private fun sanitizeSearchQuery(query: Editable?): String {
+        if (query == null) {
+            return "";
+        }
+        val queryWithEscapedQuotes = query.replace(Regex.fromLiteral("\""), "\"\"")
+        return "*\"$queryWithEscapedQuotes\"*"
+    }
+
+    fun searchWithScore(query: Editable?) {
+        // 1
+        viewModelScope.launch {
+            // 2
+            if (query.isNullOrBlank()) {
+                // 3
+                noteRepository.getNotes().let { _searchResults.postValue(it) }
+            } else {
+                // 4
+                val sanitizedQuery = sanitizeSearchQuery(query)
+                noteRepository.searchWithMatchInfo(sanitizedQuery).let { results ->
+                    // 5
+                    results.sortedByDescending { result -> calculateScore(result.matchInfo) }
+                        // 6
+                        .map { result -> result.note }
+                        // 7
+                        .let { _searchResults.postValue(it) }
+                }
+            }
         }
     }
 
