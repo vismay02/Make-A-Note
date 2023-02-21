@@ -3,7 +3,6 @@ package com.vismay.makeanote.ui.notes
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.widget.addTextChangedListener
@@ -20,16 +19,12 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel>() {
-
-    private lateinit var notes: MutableList<NoteEntity>
-
     private val getResult =
         registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()
         ) {
             if (it.resultCode == Activity.RESULT_OK) {
                 val position = it.data?.getIntExtra(Constants.KEY_NOTE_POSITION, -1)
-                Log.d("TAG", "Position from create activity: $position")
                 position?.let {
                     viewModel.fetchNewNote(position)
                 }
@@ -42,7 +37,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel>() 
             mViewBinding.editTextSearchBoxNoteList.clearFocus()
             if (noteClick.second) {
                 showAlertDialog(R.layout.dialog_alert) {
-                    viewModel.deleteNote(noteClick.first)
+                    viewModel.deleteNote(noteClick.first, noteClick.third)
                 }
             } else {
                 showNoteInDetail(noteClick.first, noteClick.third)
@@ -57,18 +52,15 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel>() 
         mViewBinding.notesRecycler.adapter = notesAdapter
 
         viewModel.getNotes.observe(this) { notes ->
-            this.notes = mutableListOf()
-            this.notes.addAll(notes)
             notesAdapter.updateAdapter(notes)
         }
         viewModel.searchResults.observe(this) {
         }
         viewModel.getNewNote.observe(this) { dataPair ->
-            if (!::notes.isInitialized) {
-                notes = mutableListOf()
-            }
-            notes.add(dataPair.first)
             notesAdapter.addNote(dataPair.first, dataPair.second)
+        }
+        viewModel.deleteNote.observe(this) { deletedData ->
+            notesAdapter.deleteNote(deletedData.first, deletedData.second)
         }
         viewModel.getAllNotes()
     }

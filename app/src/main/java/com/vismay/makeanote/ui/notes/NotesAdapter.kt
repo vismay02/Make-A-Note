@@ -44,6 +44,11 @@ class NotesAdapter(
         }
     }
 
+    fun deleteNote(note: NoteEntity, position: Int) {
+        notes.remove(note)
+        notifyItemRemoved(position)
+    }
+
     class NoteItemHolder(private var binding: NotesItemViewBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
