@@ -24,6 +24,9 @@ class MainActivityViewModel @Inject constructor(
     private val _getNotes = MutableLiveData<List<NoteEntity>>()
     val getNotes = _getNotes as LiveData<List<NoteEntity>>
 
+    private val _getNewNote = MutableLiveData<Pair<NoteEntity, Int>>()
+    val getNewNote = _getNewNote as LiveData<Pair<NoteEntity, Int>>
+
     fun getAllNotes() {
         viewModelScope.launch {
             _getNotes.postValue(noteRepository.getNotes())
@@ -33,6 +36,12 @@ class MainActivityViewModel @Inject constructor(
     fun deleteNote(note: NoteEntity) {
         viewModelScope.launch {
             noteRepository.deleteNote(note)
+        }
+    }
+
+    fun fetchNewNote(position: Int) {
+        viewModelScope.launch {
+            _getNewNote.postValue(Pair(noteRepository.fetchNewNote(), position))
         }
     }
 

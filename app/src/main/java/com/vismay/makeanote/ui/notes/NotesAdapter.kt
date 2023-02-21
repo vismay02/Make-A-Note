@@ -10,7 +10,7 @@ import com.vismay.makeanote.utils.extensions.DateExtensions.getFormattedDate
 
 class NotesAdapter(
     private val notes: MutableList<NoteEntity>,
-    private val onItemClick: (Pair<NoteEntity, Boolean>) -> Unit
+    private val onItemClick: (Triple<NoteEntity, Boolean, Int>) -> Unit
 ) : RecyclerView.Adapter<NotesAdapter.NoteItemHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteItemHolder =
@@ -30,16 +30,24 @@ class NotesAdapter(
     override fun getItemCount(): Int = notes.size
 
     fun updateAdapter(notes: List<NoteEntity>) {
-        /*FIXME: This should be called only once when the activity is created.*/
         this.notes.clear()
         this.notes.addAll(notes)
         notifyDataSetChanged()
     }
 
+    fun addNote(note: NoteEntity, position: Int) {
+        notes.add(note)
+        if (position == -1) {
+            notifyItemInserted(notes.lastIndex + 1)
+        } else {
+            notifyItemInserted(position)
+        }
+    }
+
     class NoteItemHolder(private var binding: NotesItemViewBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: NoteEntity, onItemClick: (Pair<NoteEntity, Boolean>) -> Unit) {
+        fun bind(item: NoteEntity, onItemClick: (Triple<NoteEntity, Boolean, Int>) -> Unit) {
             var title = ""
             var description = ""
             /*Put this logic inside a helper/extension function.*/
@@ -60,10 +68,10 @@ class NotesAdapter(
             }
             binding.run {
                 constraintLayoutNoteRoot.setOnClickListener {
-                    onItemClick(Pair(item, false))
+                    onItemClick(Triple(item, false, layoutPosition))
                 }
                 constraintLayoutNoteRoot.setOnLongClickListener {
-                    onItemClick(Pair(item, true))
+                    onItemClick(Triple(item, true, layoutPosition))
                     return@setOnLongClickListener true
                 }
                 textTitle.text = title

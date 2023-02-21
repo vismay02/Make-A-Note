@@ -1,11 +1,14 @@
 package com.vismay.makeanote.ui.createupdatenote
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import com.vismay.makeanote.data.local.db.entity.NoteEntity
 import com.vismay.makeanote.databinding.ActivityCreateUpdateNoteBinding
 import com.vismay.makeanote.ui.base.BaseActivity
 import com.vismay.makeanote.utils.Constants.KEY_NOTE_BUNDLE
+import com.vismay.makeanote.utils.Constants.KEY_NOTE_POSITION
 import com.vismay.makeanote.utils.Constants.SPECIAL_CHAR
 import com.vismay.makeanote.utils.extensions.DateExtensions.getCurrentDate
 import dagger.hilt.android.AndroidEntryPoint
@@ -17,6 +20,7 @@ class CreateUpdateNoteActivity :
     override val viewModel: CreateUpdateViewModel by viewModels()
     private var noteExtra: NoteEntity? = null
     private var noteText: String? = null
+    private var posiiton: Int = -1
 
     override fun getBinding(): ActivityCreateUpdateNoteBinding =
         ActivityCreateUpdateNoteBinding.inflate(layoutInflater)
@@ -24,6 +28,7 @@ class CreateUpdateNoteActivity :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         noteExtra = intent.getParcelableExtra(KEY_NOTE_BUNDLE) as NoteEntity?
+        posiiton = intent.getIntExtra(KEY_NOTE_POSITION, -1)
 
         noteExtra?.let { note ->
             note.note?.let {
@@ -48,7 +53,9 @@ class CreateUpdateNoteActivity :
         noteExtra?.let { note ->
             viewModel.update(note.id, updatedString, getCurrentDate())
         } ?: viewModel.save(updatedString, getCurrentDate())
-
+        setResult(Activity.RESULT_OK, Intent().apply {
+            putExtra(KEY_NOTE_POSITION, posiiton)
+        })
         finish()
     }
 }

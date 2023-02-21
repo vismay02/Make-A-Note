@@ -13,7 +13,6 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import kotlinx.android.synthetic.main.dialog_alert.*
 
-
 object ActivityExtension {
 
     inline fun <reified T : Any> Context.launchActivity(

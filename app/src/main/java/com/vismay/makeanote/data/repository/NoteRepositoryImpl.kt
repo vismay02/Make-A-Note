@@ -51,4 +51,9 @@ class NoteRepositoryImpl @Inject constructor(
         withContext(dispatcher) {
             noteDao.searchWithMatchInfo(query)
         }
+
+    override suspend fun fetchNewNote(): NoteEntity =
+        withContext(dispatcher) {
+            noteDao.fetchNewNote()
+        }
 }

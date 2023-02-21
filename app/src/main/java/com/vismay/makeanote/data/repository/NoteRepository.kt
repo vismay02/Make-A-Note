@@ -20,4 +20,5 @@ interface NoteRepository {
 
     suspend fun searchWithMatchInfo(query: String): List<LaunchWithMatchInfo>
 
+    suspend fun fetchNewNote(): NoteEntity
 }

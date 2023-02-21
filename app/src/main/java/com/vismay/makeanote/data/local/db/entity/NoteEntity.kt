@@ -9,15 +9,14 @@ data class NoteEntity(
     @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") val id: Int = 0,
     @ColumnInfo(name = "note") val note: String?,
     @ColumnInfo(name = "color") val color: String? = "#000000",
-    @ColumnInfo(name = "date") val date: String?
+    @ColumnInfo(name = "date") val date: String?,
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
         parcel.readString(),
         parcel.readString(),
         parcel.readString()
-    ) {
-    }
+    )
 
     override fun describeContents(): Int = 0
 
