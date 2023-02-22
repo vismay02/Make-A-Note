@@ -8,6 +8,19 @@
     android:background="@color/black"
     tools:context=".ui.notes.MainActivity">
 
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/group_no_note"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="text_view_no_note,image_view_no_note" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/group_note_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="text_input_search_box_container,notesRecycler" />
+
     <include
         android:id="@+id/include_toolbar_main"
         layout="@layout/toolbar"
@@ -16,6 +29,32 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/image_view_no_note"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/_50dp"
+        android:scaleType="centerInside"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/include_toolbar_main"
+        app:srcCompat="@drawable/ic_note" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/text_view_no_note"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_8dp"
+        android:fontFamily="@font/opensans_semibold"
+        android:text="@string/all_no_note"
+        android:textAlignment="center"
+        android:textColor="@color/grey"
+        android:textSize="@dimen/_22sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/image_view_no_note" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/text_input_search_box_container"

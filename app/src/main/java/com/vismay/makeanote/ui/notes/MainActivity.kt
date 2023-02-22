@@ -15,6 +15,7 @@ import com.vismay.makeanote.utils.Constants
 import com.vismay.makeanote.utils.extensions.ActivityExtension.hideKeyboard
 import com.vismay.makeanote.utils.extensions.ActivityExtension.showAlertDialog
 import com.vismay.makeanote.utils.extensions.ViewExtensions.onDone
+import com.vismay.makeanote.utils.extensions.ViewExtensions.visibleGone
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -52,7 +53,10 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel>() 
         mViewBinding.notesRecycler.adapter = notesAdapter
 
         viewModel.getNotes.observe(this) { notes ->
-            notesAdapter.updateAdapter(notes)
+            if (notes.isNotEmpty()) {
+                toggleView()
+                notesAdapter.updateAdapter(notes)
+            }
         }
         viewModel.searchResults.observe(this) {
         }
@@ -63,6 +67,13 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel>() 
             notesAdapter.deleteNote(deletedData.first, deletedData.second)
         }
         viewModel.getAllNotes()
+    }
+
+    private fun toggleView(makeNoteListVisible: Boolean = false) {
+        if (makeNoteListVisible) {
+            mViewBinding.groupNoNote.visibleGone(isGone = true)
+            mViewBinding.groupNoteList.visibleGone(isGone = false)
+        }
     }
 
     private fun setupListeners() {

@@ -1,5 +1,7 @@
 package com.vismay.makeanote.utils.extensions
 
+import android.view.View
+import android.view.View.*
 import android.view.inputmethod.EditorInfo
 import androidx.appcompat.widget.AppCompatEditText
 
@@ -13,5 +15,15 @@ object ViewExtensions {
             }
             false
         }
+    }
+
+    fun View.visibleGone(isGone: Boolean) {
+        visibility = if (isGone) GONE
+        else VISIBLE
+    }
+
+    fun View.visibleInvisible(isInvisible: Boolean = false) {
+        visibility = if (isInvisible) INVISIBLE
+        else VISIBLE
     }
 }

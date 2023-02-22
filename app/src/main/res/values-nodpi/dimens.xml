@@ -22,6 +22,11 @@
     <dimen name="_36dp">36dp</dimen>
     <dimen name="_386dp">38dp</dimen>
     <dimen name="_40dp">40dp</dimen>
+    <dimen name="_42dp">42dp</dimen>
+    <dimen name="_44dp">44dp</dimen>
+    <dimen name="_46dp">46dp</dimen>
+    <dimen name="_48dp">48dp</dimen>
+    <dimen name="_50dp">50dp</dimen>
     <dimen name="_240dp">240dp</dimen>
     <dimen name="_340dp">340dp</dimen>
     <dimen name="_440dp">440dp</dimen>

@@ -9,4 +9,5 @@
     <string name="delete_message">Delete Note?</string>
     <string name="unable_delete_message">Unable to delete the note.</string>
     <string name="all_hint_search">Search</string>
+    <string name="all_no_note">Your notes appear here</string>
 </resources>
