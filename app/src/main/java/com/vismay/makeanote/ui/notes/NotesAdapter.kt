@@ -29,6 +29,8 @@ class NotesAdapter(
 
     override fun getItemCount(): Int = notes.size
 
+    /*Fixme: Replace notifyDataSetChanged() and handle the blink animation when adapter updates using
+       notifyItemRangeInserted()/notifyItemRangeRemoved()*/
     fun updateAdapter(notes: List<NoteEntity>) {
         this.notes.clear()
         this.notes.addAll(notes)
