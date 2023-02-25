@@ -18,8 +18,8 @@
         android:id="@+id/group_note_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:constraint_referenced_ids="text_input_search_box_container,notesRecycler" />
+        android:visibility="visible"
+        app:constraint_referenced_ids="edit_text_search,notesRecycler" />
 
     <include
         android:id="@+id/include_toolbar_main"
@@ -71,32 +71,30 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/image_view_no_note" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/text_input_search_box_container"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/edit_text_search"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/_10dp"
         android:layout_marginTop="@dimen/_8dp"
+        android:background="@drawable/rounded_rectangle_mercury"
+        android:drawableStart="@drawable/ic_search"
+        android:drawablePadding="@dimen/_4dp"
         android:focusable="true"
         android:focusableInTouchMode="true"
+        android:fontFamily="@font/opensans_regular"
         android:hint="@string/all_hint_search"
+        android:imeOptions="actionDone"
+        android:inputType="text"
+        android:maxLines="1"
+        android:paddingHorizontal="@dimen/_4dp"
+        android:paddingVertical="@dimen/_8dp"
+        android:textColor="@color/purple_700"
+        android:textColorHint="@color/grey"
+        android:textSize="@dimen/_18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/include_toolbar_main"
-        app:startIconDrawable="@drawable/ic_search">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edit_text_search_box_note_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:imeOptions="actionDone"
-            android:inputType="text"
-            android:maxLines="1"
-            android:textColorHint="@color/grey" />
-    </com.google.android.material.textfield.TextInputLayout>
+        app:layout_constraintTop_toBottomOf="@id/include_toolbar_main" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/notesRecycler"
@@ -108,7 +106,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_input_search_box_container" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_text_search" />
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/coordinatorFab"

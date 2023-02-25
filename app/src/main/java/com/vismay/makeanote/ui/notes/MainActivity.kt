@@ -45,7 +45,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel>() 
     private val notesAdapter by lazy {
         NotesAdapter(mutableListOf()) { noteClick ->
             hideKeyboard()
-            mViewBinding.editTextSearchBoxNoteList.clearFocus()
+            mViewBinding.editTextSearch.clearFocus()
             if (noteClick.second) {
                 showAlertDialog(R.layout.dialog_alert) {
                     viewModel.deleteNote(noteClick.first, noteClick.third)
@@ -113,14 +113,14 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel>() 
             showNoteInDetail()
         }
 
-        mViewBinding.editTextSearchBoxNoteList.onDone {
+        mViewBinding.editTextSearch.onDone {
             hideKeyboard()
-            mViewBinding.editTextSearchBoxNoteList.clearFocus()
+            mViewBinding.editTextSearch.clearFocus()
         }
     }
 
     private fun setupSearch() {
-        mViewBinding.editTextSearchBoxNoteList.addTextChangedListener { query ->
+        mViewBinding.editTextSearch.addTextChangedListener { query ->
             Log.d("TAG", "query: $query")
             viewModel.searchWithScore(query)
         }

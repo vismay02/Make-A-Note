@@ -31,9 +31,10 @@ class NotesAdapter(
 
     fun updateAdapter(notes: List<NoteEntity>) {
         this.notes.clear()
-        notifyItemRangeRemoved(0, itemCount)
         this.notes.addAll(notes)
-        notifyItemRangeInserted(0, itemCount)
+        notifyDataSetChanged()
+//        notifyItemRangeRemoved(0, itemCount)
+//        notifyItemRangeInserted(0, itemCount)
     }
 
     fun addUpdateNote(note: NoteEntity, position: Int, isFirstNote: () -> Unit) {
