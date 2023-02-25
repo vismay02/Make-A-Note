@@ -18,6 +18,9 @@ interface NoteDao {
     @Update
     suspend fun updateNote(note: NoteEntity)
 
+    @Query("SELECT * FROM notes WHERE id is :id")
+    suspend fun fetchUpdatedNote(id: Int): NoteEntity
+
     @Query("SELECT * FROM notes ORDER BY id DESC LIMIT 1")
     suspend fun fetchNewNote(): NoteEntity
 

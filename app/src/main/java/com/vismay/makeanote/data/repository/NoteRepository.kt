@@ -1,6 +1,5 @@
 package com.vismay.makeanote.data.repository
 
-import androidx.room.Query
 import com.vismay.makeanote.data.local.db.entity.LaunchWithMatchInfo
 import com.vismay.makeanote.data.local.db.entity.NoteEntity
 import javax.inject.Singleton
@@ -21,4 +20,6 @@ interface NoteRepository {
     suspend fun searchWithMatchInfo(query: String): List<LaunchWithMatchInfo>
 
     suspend fun fetchNewNote(): NoteEntity
+
+    suspend fun fetchUpdatedNote(id: Int): NoteEntity
 }

@@ -53,7 +53,9 @@ class CreateUpdateNoteActivity :
         noteExtra?.let { note ->
             viewModel.update(note.id, updatedString, getCurrentDate())
         } ?: viewModel.save(updatedString, getCurrentDate())
+
         setResult(Activity.RESULT_OK, Intent().apply {
+            putExtra(KEY_NOTE_BUNDLE, noteExtra)
             putExtra(KEY_NOTE_POSITION, posiiton)
         })
         finish()

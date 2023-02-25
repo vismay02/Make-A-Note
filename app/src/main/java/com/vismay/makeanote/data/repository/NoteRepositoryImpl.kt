@@ -56,4 +56,9 @@ class NoteRepositoryImpl @Inject constructor(
         withContext(dispatcher) {
             noteDao.fetchNewNote()
         }
+
+    override suspend fun fetchUpdatedNote(id: Int): NoteEntity =
+        withContext(dispatcher) {
+            noteDao.fetchUpdatedNote(id)
+        }
 }

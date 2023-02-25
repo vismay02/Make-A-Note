@@ -3,15 +3,18 @@ package com.vismay.makeanote.ui.notes
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.widget.addTextChangedListener
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.vismay.makeanote.R
 import com.vismay.makeanote.data.local.db.entity.NoteEntity
 import com.vismay.makeanote.databinding.ActivityMainBinding
 import com.vismay.makeanote.ui.base.BaseActivity
 import com.vismay.makeanote.ui.createupdatenote.CreateUpdateNoteActivity
 import com.vismay.makeanote.utils.Constants
+import com.vismay.makeanote.utils.WrapContentLinearLayoutManager
 import com.vismay.makeanote.utils.extensions.ActivityExtension.hideKeyboard
 import com.vismay.makeanote.utils.extensions.ActivityExtension.showAlertDialog
 import com.vismay.makeanote.utils.extensions.ViewExtensions.onDone
@@ -26,8 +29,15 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel>() 
         ) {
             if (it.resultCode == Activity.RESULT_OK) {
                 val position = it.data?.getIntExtra(Constants.KEY_NOTE_POSITION, -1)
+                val note = it.data?.getParcelableExtra<NoteEntity?>(Constants.KEY_NOTE_BUNDLE)
                 position?.let {
-                    viewModel.fetchNewNote(position)
+                    if (position != -1) {
+                        note?.run {
+                            viewModel.fetchUpdatedNote(id, position)
+                        }
+                    } else {
+                        viewModel.fetchNewNote(position)
+                    }
                 }
             }
         }
@@ -50,30 +60,52 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel>() 
         super.onCreate(savedInstanceState)
         setupListeners()
         setupSearch()
+        addObservers()
+        mViewBinding.notesRecycler.layoutManager =
+            WrapContentLinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         mViewBinding.notesRecycler.adapter = notesAdapter
 
-        viewModel.getNotes.observe(this) { notes ->
-            if (notes.isNotEmpty()) {
-                toggleView()
-                notesAdapter.updateAdapter(notes)
-            }
-        }
-        viewModel.searchResults.observe(this) {
-        }
-        viewModel.getNewNote.observe(this) { dataPair ->
-            notesAdapter.addNote(dataPair.first, dataPair.second)
-        }
-        viewModel.deleteNote.observe(this) { deletedData ->
-            notesAdapter.deleteNote(deletedData.first, deletedData.second)
-        }
         viewModel.getAllNotes()
     }
 
-    private fun toggleView(makeNoteListVisible: Boolean = false) {
-        if (makeNoteListVisible) {
-            mViewBinding.groupNoNote.visibleGone(isGone = true)
-            mViewBinding.groupNoteList.visibleGone(isGone = false)
+    private fun addObservers() {
+        viewModel.getNotes.observe(this) { notes ->
+            if (notes.isNotEmpty()) {
+                notesAdapter.updateAdapter(notes)
+                showNotes()
+            }
         }
+        viewModel.searchResults.observe(this) {
+            if (it.isNullOrEmpty()) {
+                mViewBinding.notesRecycler.visibleGone(isGone = true)
+                mViewBinding.textViewNoResult.visibleGone(isGone = false)
+            } else {
+                mViewBinding.textViewNoResult.visibleGone(isGone = true)
+                mViewBinding.notesRecycler.visibleGone(isGone = false)
+                notesAdapter.updateAdapter(it)
+            }
+        }
+        viewModel.getNewNote.observe(this) { dataPair ->
+            notesAdapter.addUpdateNote(dataPair.first, dataPair.second) {
+                showNotes()
+            }
+        }
+        viewModel.getUpdatedNote.observe(this) { dataPair ->
+            notesAdapter.addUpdateNote(dataPair.first, dataPair.second) {
+
+            }
+        }
+        viewModel.deleteNote.observe(this) { deletedData ->
+            notesAdapter.deleteNote(deletedData.first, deletedData.second) {
+                mViewBinding.groupNoteList.visibleGone(isGone = true)
+                mViewBinding.groupNoNote.visibleGone(isGone = false)
+            }
+        }
+    }
+
+    private fun showNotes() {
+        mViewBinding.groupNoNote.visibleGone(isGone = true)
+        mViewBinding.groupNoteList.visibleGone(isGone = false)
     }
 
     private fun setupListeners() {
@@ -89,6 +121,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel>() 
 
     private fun setupSearch() {
         mViewBinding.editTextSearchBoxNoteList.addTextChangedListener { query ->
+            Log.d("TAG", "query: $query")
             viewModel.searchWithScore(query)
         }
     }

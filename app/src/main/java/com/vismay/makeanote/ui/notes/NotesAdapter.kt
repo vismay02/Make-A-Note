@@ -31,22 +31,35 @@ class NotesAdapter(
 
     fun updateAdapter(notes: List<NoteEntity>) {
         this.notes.clear()
+        notifyItemRangeRemoved(0, itemCount)
         this.notes.addAll(notes)
-        notifyDataSetChanged()
+        notifyItemRangeInserted(0, itemCount)
     }
 
-    fun addNote(note: NoteEntity, position: Int) {
-        notes.add(note)
-        if (position == -1) {
-            notifyItemInserted(notes.lastIndex + 1)
+    fun addUpdateNote(note: NoteEntity, position: Int, isFirstNote: () -> Unit) {
+        if (notes.find { note.id == it.id } == null) {
+            notes.add(note)
+            if (position == -1) {
+                notifyItemInserted(notes.lastIndex + 1)
+            } else {
+                notifyItemInserted(position)
+            }
         } else {
-            notifyItemInserted(position)
+            notes[position] = note
+            notifyItemChanged(position)
+        }
+
+        if (notes.size == 1) {
+            isFirstNote()
         }
     }
 
-    fun deleteNote(note: NoteEntity, position: Int) {
+    fun deleteNote(note: NoteEntity, position: Int, isLastDeleted: () -> Unit) {
         notes.remove(note)
         notifyItemRemoved(position)
+        if (notes.isEmpty()) {
+            isLastDeleted()
+        }
     }
 
     class NoteItemHolder(private var binding: NotesItemViewBinding) :
@@ -73,10 +86,10 @@ class NotesAdapter(
             }
             binding.run {
                 constraintLayoutNoteRoot.setOnClickListener {
-                    onItemClick(Triple(item, false, layoutPosition))
+                    onItemClick(Triple(item, false, absoluteAdapterPosition))
                 }
                 constraintLayoutNoteRoot.setOnLongClickListener {
-                    onItemClick(Triple(item, true, layoutPosition))
+                    onItemClick(Triple(item, true, absoluteAdapterPosition))
                     return@setOnLongClickListener true
                 }
                 textTitle.text = title
