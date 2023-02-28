@@ -12,4 +12,11 @@
     <color name="red">#f05545</color>
     <color name="royal_blue">#5A74DA</color>
     <color name="azure">#3484EC</color>
+    <!--Random colors for Notes-->
+    <color name="electric_blue">#6EFAFB</color>
+    <color name="old_lace">#FFF4E4</color>
+    <color name="vanilla">#F7E8A4</color>
+    <color name="munsell">#0091AD</color>
+    <color name="almond">#EAE0D5</color>
+    <color name="pale_dogwood">#EFD2CB</color>
 </resources>

@@ -1,14 +1,21 @@
 package com.vismay.makeanote.ui.notes
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.vismay.makeanote.R
 import com.vismay.makeanote.data.local.db.entity.NoteEntity
 import com.vismay.makeanote.databinding.NotesItemViewBinding
 import com.vismay.makeanote.utils.Constants
+import com.vismay.makeanote.utils.DrawableGenerator
+import com.vismay.makeanote.utils.DrawableGenerator.Companion.setDrawable
+import com.vismay.makeanote.utils.Utils.randomColorGenerator
 import com.vismay.makeanote.utils.extensions.DateExtensions.getFormattedDate
 
+
 class NotesAdapter(
+    private val context: Context,
     private val notes: MutableList<NoteEntity>,
     private val onItemClick: (Triple<NoteEntity, Boolean, Int>) -> Unit
 ) : RecyclerView.Adapter<NotesAdapter.NoteItemHolder>() {
@@ -65,7 +72,7 @@ class NotesAdapter(
         }
     }
 
-    class NoteItemHolder(private var binding: NotesItemViewBinding) :
+    inner class NoteItemHolder(private var binding: NotesItemViewBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: NoteEntity, onItemClick: (Triple<NoteEntity, Boolean, Int>) -> Unit) {
@@ -98,6 +105,15 @@ class NotesAdapter(
                 textTitle.text = title
                 textDescription.text = description
                 textDateTime.text = item.date?.getFormattedDate()
+                constraintLayoutNoteRoot.setDrawable(context) {
+                    solidColor = R.color.purple_700
+                    cornerRadii = DrawableGenerator.CornerRadii(
+                        30, 30, 30, 30
+                    )
+                    strokeColor = randomColorGenerator()
+                    strokeWidth = 4
+                }
+                //   constraintLayoutNoteRoot.background = randomColorGenerator()
             }
         }
     }

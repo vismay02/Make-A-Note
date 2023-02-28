@@ -3,10 +3,10 @@ package com.vismay.makeanote.ui.notes
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.widget.addTextChangedListener
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.vismay.makeanote.R
 import com.vismay.makeanote.data.local.db.entity.NoteEntity
@@ -17,9 +17,12 @@ import com.vismay.makeanote.utils.Constants
 import com.vismay.makeanote.utils.WrapContentLinearLayoutManager
 import com.vismay.makeanote.utils.extensions.ActivityExtension.hideKeyboard
 import com.vismay.makeanote.utils.extensions.ActivityExtension.showAlertDialog
+import com.vismay.makeanote.utils.extensions.ViewExtensions.clicks
 import com.vismay.makeanote.utils.extensions.ViewExtensions.onDone
 import com.vismay.makeanote.utils.extensions.ViewExtensions.visibleGone
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel>() {
@@ -43,7 +46,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel>() 
         }
 
     private val notesAdapter by lazy {
-        NotesAdapter(mutableListOf()) { noteClick ->
+        NotesAdapter(this, mutableListOf()) { noteClick ->
             hideKeyboard()
             mViewBinding.editTextSearch.clearFocus()
             if (noteClick.second) {
@@ -92,7 +95,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel>() 
         }
         viewModel.getUpdatedNote.observe(this) { dataPair ->
             notesAdapter.addUpdateNote(dataPair.first, dataPair.second) {
-
             }
         }
         viewModel.deleteNote.observe(this) { deletedData ->
@@ -109,9 +111,9 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel>() 
     }
 
     private fun setupListeners() {
-        mViewBinding.fab.setOnClickListener {
-            showNoteInDetail()
-        }
+        mViewBinding.fab.clicks()
+            .onEach { showNoteInDetail() }
+            .launchIn(lifecycleScope)
 
         mViewBinding.editTextSearch.onDone {
             hideKeyboard()
@@ -121,7 +123,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel>() 
 
     private fun setupSearch() {
         mViewBinding.editTextSearch.addTextChangedListener { query ->
-            Log.d("TAG", "query: $query")
             viewModel.searchWithScore(query)
         }
     }

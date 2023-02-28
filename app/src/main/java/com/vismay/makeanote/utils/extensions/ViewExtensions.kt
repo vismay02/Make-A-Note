@@ -4,6 +4,8 @@ import android.view.View
 import android.view.View.*
 import android.view.inputmethod.EditorInfo
 import androidx.appcompat.widget.AppCompatEditText
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.callbackFlow
 
 object ViewExtensions {
 
@@ -25,5 +27,12 @@ object ViewExtensions {
     fun View.visibleInvisible(isInvisible: Boolean = false) {
         visibility = if (isInvisible) INVISIBLE
         else VISIBLE
+    }
+
+    fun View.clicks() = callbackFlow<Unit> {
+        setOnClickListener {
+            trySend(Unit)
+        }
+        awaitClose { setOnClickListener(null) }
     }
 }
