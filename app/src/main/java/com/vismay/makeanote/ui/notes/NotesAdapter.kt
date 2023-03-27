@@ -1,15 +1,15 @@
 package com.vismay.makeanote.ui.notes
 
 import android.content.Context
+import android.graphics.drawable.LayerDrawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.vismay.makeanote.R
 import com.vismay.makeanote.data.local.db.entity.NoteEntity
 import com.vismay.makeanote.databinding.NotesItemViewBinding
 import com.vismay.makeanote.utils.Constants
-import com.vismay.makeanote.utils.DrawableGenerator
-import com.vismay.makeanote.utils.DrawableGenerator.Companion.setDrawable
 import com.vismay.makeanote.utils.Utils.randomColorGenerator
 import com.vismay.makeanote.utils.extensions.DateExtensions.getFormattedDate
 
@@ -105,15 +105,12 @@ class NotesAdapter(
                 textTitle.text = title
                 textDescription.text = description
                 textDateTime.text = item.date?.getFormattedDate()
-                constraintLayoutNoteRoot.setDrawable(context) {
-                    solidColor = R.color.purple_700
-                    cornerRadii = DrawableGenerator.CornerRadii(
-                        30, 30, 30, 30
-                    )
-                    strokeColor = randomColorGenerator()
-                    strokeWidth = 4
+                constraintLayoutNoteRoot.setBackgroundResource(R.drawable.rounded_rectangle_background)
+
+                (constraintLayoutNoteRoot.background as LayerDrawable).apply {
+                    getDrawable(0).setTint(ContextCompat.getColor(context, R.color.purple_700))
+                    getDrawable(1).setTint(ContextCompat.getColor(context, randomColorGenerator()))
                 }
-                //   constraintLayoutNoteRoot.background = randomColorGenerator()
             }
         }
     }
