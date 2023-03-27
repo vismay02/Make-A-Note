@@ -13,20 +13,20 @@ class CreateUpdateViewModel @Inject constructor(
     private var noteRepository: NoteRepository
 ) : BaseViewModel() {
 
-    fun save(note: String, date: String) {
+    fun save(note: String, date: String, color: Int) {
         viewModelScope.launch {
             noteRepository.saveNote(
                 note =
-                NoteEntity(note = note, date = date)
+                NoteEntity(note = note, color = color, date = date)
             )
         }
     }
 
-    fun update(id: Int, note: String, date: String) {
+    fun update(id: Int, note: String, date: String, color: Int) {
         viewModelScope.launch {
             noteRepository.updateNote(
                 note =
-                NoteEntity(id = id, note = note, date = date)
+                NoteEntity(id = id, note = note, color = color, date = date)
             )
         }
     }

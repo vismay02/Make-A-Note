@@ -5,6 +5,7 @@ import android.graphics.drawable.LayerDrawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.vismay.makeanote.R
 import com.vismay.makeanote.data.local.db.entity.NoteEntity
@@ -12,7 +13,10 @@ import com.vismay.makeanote.databinding.NotesItemViewBinding
 import com.vismay.makeanote.utils.Constants
 import com.vismay.makeanote.utils.Utils.randomColorGenerator
 import com.vismay.makeanote.utils.extensions.DateExtensions.getFormattedDate
-
+import com.vismay.makeanote.utils.extensions.ViewExtensions.clicks
+import com.vismay.makeanote.utils.extensions.ViewExtensions.longClicks
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 class NotesAdapter(
     private val context: Context,
@@ -95,13 +99,18 @@ class NotesAdapter(
                 }
             }
             binding.run {
-                constraintLayoutNoteRoot.setOnClickListener {
-                    onItemClick(Triple(item, false, absoluteAdapterPosition))
-                }
-                constraintLayoutNoteRoot.setOnLongClickListener {
-                    onItemClick(Triple(item, true, absoluteAdapterPosition))
-                    return@setOnLongClickListener true
-                }
+                constraintLayoutNoteRoot.clicks()
+                    .onEach {
+                        onItemClick(Triple(item, false, absoluteAdapterPosition))
+                    }
+                    .launchIn((context as MainActivity).lifecycleScope)
+
+                constraintLayoutNoteRoot.longClicks()
+                    .onEach {
+                        onItemClick(Triple(item, true, absoluteAdapterPosition))
+                    }
+                    .launchIn(context.lifecycleScope)
+
                 textTitle.text = title
                 textDescription.text = description
                 textDateTime.text = item.date?.getFormattedDate()
@@ -109,7 +118,12 @@ class NotesAdapter(
 
                 (constraintLayoutNoteRoot.background as LayerDrawable).apply {
                     getDrawable(0).setTint(ContextCompat.getColor(context, R.color.purple_700))
-                    getDrawable(1).setTint(ContextCompat.getColor(context, randomColorGenerator()))
+                    getDrawable(1).setTint(
+                        ContextCompat.getColor(
+                            context,
+                            if (item.color == -1) randomColorGenerator() else item.color
+                        )
+                    )
                 }
             }
         }

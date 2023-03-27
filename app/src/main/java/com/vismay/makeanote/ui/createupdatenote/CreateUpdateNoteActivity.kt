@@ -4,12 +4,15 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
+import com.vismay.makeanote.R
 import com.vismay.makeanote.data.local.db.entity.NoteEntity
 import com.vismay.makeanote.databinding.ActivityCreateUpdateNoteBinding
 import com.vismay.makeanote.ui.base.BaseActivity
 import com.vismay.makeanote.utils.Constants.KEY_NOTE_BUNDLE
 import com.vismay.makeanote.utils.Constants.KEY_NOTE_POSITION
 import com.vismay.makeanote.utils.Constants.SPECIAL_CHAR
+import com.vismay.makeanote.utils.Utils
+import com.vismay.makeanote.utils.Utils.randomColorGenerator
 import com.vismay.makeanote.utils.extensions.DateExtensions.getCurrentDate
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -21,6 +24,7 @@ class CreateUpdateNoteActivity :
     private var noteExtra: NoteEntity? = null
     private var noteText: String? = null
     private var posiiton: Int = -1
+    private var pressedTime = 0L
 
     override fun getBinding(): ActivityCreateUpdateNoteBinding =
         ActivityCreateUpdateNoteBinding.inflate(layoutInflater)
@@ -50,14 +54,21 @@ class CreateUpdateNoteActivity :
             finish()
             return
         }
-        noteExtra?.let { note ->
-            viewModel.update(note.id, updatedString, getCurrentDate())
-        } ?: viewModel.save(updatedString, getCurrentDate())
 
-        setResult(Activity.RESULT_OK, Intent().apply {
-            putExtra(KEY_NOTE_BUNDLE, noteExtra)
-            putExtra(KEY_NOTE_POSITION, posiiton)
-        })
-        finish()
+        if (pressedTime + 2000 > System.currentTimeMillis()) {
+            noteExtra?.let { note ->
+                viewModel.update(note.id, updatedString, getCurrentDate(), note.color)
+            } ?: viewModel.save(updatedString, getCurrentDate(), randomColorGenerator())
+
+            setResult(Activity.RESULT_OK, Intent().apply {
+                putExtra(KEY_NOTE_BUNDLE, noteExtra)
+                putExtra(KEY_NOTE_POSITION, posiiton)
+            })
+            finish()
+        } else {
+            Utils.showShortToast(this, getString(R.string.save_and_back))
+
+        }
+        pressedTime = System.currentTimeMillis()
     }
 }

@@ -35,4 +35,14 @@ object ViewExtensions {
         }
         awaitClose { setOnClickListener(null) }
     }
+
+    fun View.longClicks() = callbackFlow {
+        setOnLongClickListener {
+            trySend(Unit)
+            return@setOnLongClickListener true
+        }
+        awaitClose { setOnLongClickListener(null) }
+    }
+
+
 }

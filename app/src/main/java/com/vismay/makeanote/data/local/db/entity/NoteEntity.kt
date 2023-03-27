@@ -8,13 +8,13 @@ import androidx.room.*
 data class NoteEntity(
     @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") val id: Int = 0,
     @ColumnInfo(name = "note") val note: String?,
-    @ColumnInfo(name = "color") val color: String? = "#000000",
+    @ColumnInfo(name = "color") val color: Int = -1,
     @ColumnInfo(name = "date") val date: String?,
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
         parcel.readString(),
-        parcel.readString(),
+        parcel.readInt(),
         parcel.readString()
     )
 
@@ -23,7 +23,7 @@ data class NoteEntity(
     override fun writeToParcel(parcel: Parcel?, flags: Int) {
         parcel?.writeInt(id)
         parcel?.writeString(note)
-        parcel?.writeString(color)
+        parcel?.writeInt(color)
         parcel?.writeString(date)
     }
 
