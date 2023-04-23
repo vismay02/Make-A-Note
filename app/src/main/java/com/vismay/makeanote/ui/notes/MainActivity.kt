@@ -3,6 +3,8 @@ package com.vismay.makeanote.ui.notes
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.widget.addTextChangedListener
@@ -13,9 +15,11 @@ import com.vismay.makeanote.data.local.db.entity.NoteEntity
 import com.vismay.makeanote.databinding.ActivityMainBinding
 import com.vismay.makeanote.ui.base.BaseActivity
 import com.vismay.makeanote.ui.createupdatenote.CreateUpdateNoteActivity
+import com.vismay.makeanote.ui.oauth.LoginActivity
 import com.vismay.makeanote.utils.Constants
 import com.vismay.makeanote.utils.WrapContentLinearLayoutManager
 import com.vismay.makeanote.utils.extensions.ActivityExtension.hideKeyboard
+import com.vismay.makeanote.utils.extensions.ActivityExtension.launchActivity
 import com.vismay.makeanote.utils.extensions.ActivityExtension.showAlertDialog
 import com.vismay.makeanote.utils.extensions.ViewExtensions.clicks
 import com.vismay.makeanote.utils.extensions.ViewExtensions.onDone
@@ -24,8 +28,10 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
+
 @AndroidEntryPoint
 class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel>() {
+
     private val getResult =
         registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()
@@ -61,6 +67,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel>() 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setSupportActionBar(mViewBinding.includeToolbarMain.toolbar)
         setupListeners()
         setupSearch()
         addObservers()
@@ -134,7 +141,30 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel>() 
         })
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.backup_notes -> {
+                showSignInActivity()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun showSignInActivity() {
+        launchActivity<LoginActivity>()
+    }
+
     override fun getBinding(): ActivityMainBinding = ActivityMainBinding.inflate(layoutInflater)
 
     override val viewModel: MainActivityViewModel by viewModels()
+
+    companion object {
+        val TAG = MainActivity::class.java.simpleName
+    }
 }

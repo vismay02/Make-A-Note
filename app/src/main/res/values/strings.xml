@@ -11,4 +11,5 @@
     <string name="all_hint_search">Search</string>
     <string name="all_no_note">Your notes appear here</string>
     <string name="all_no_result">No result found</string>
+    <string name="menu_backup">Back Up</string>
 </resources>

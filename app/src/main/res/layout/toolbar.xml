@@ -11,24 +11,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <androidx.appcompat.widget.Toolbar
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:background="@color/purple_700"
-                android:elevation="@dimen/_4dp"
-                android:textAlignment="center"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:title="@string/app_name"
-                app:titleTextColor="@color/mercury" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            android:layout_height="match_parent"
+            android:background="@color/purple_700"
+            android:elevation="@dimen/_4dp"
+            android:textAlignment="center"
+            app:title="@string/app_name"
+            app:titleTextColor="@color/mercury" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
