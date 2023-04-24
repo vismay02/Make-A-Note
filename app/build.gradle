@@ -99,6 +99,7 @@ dependencies {
     implementation 'com.firebaseui:firebase-ui-auth:7.2.0'
     // App Check library
     implementation 'com.google.firebase:firebase-appcheck-playintegrity'
+    implementation 'com.google.firebase:firebase-appcheck-debug:16.1.2'
 }
 
 // Allow references to generated code

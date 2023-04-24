@@ -3,6 +3,7 @@ package com.vismay.makeanote.ui.notes
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.result.contract.ActivityResultContracts
@@ -10,6 +11,11 @@ import androidx.activity.viewModels
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import com.vismay.makeanote.R
 import com.vismay.makeanote.data.local.db.entity.NoteEntity
 import com.vismay.makeanote.databinding.ActivityMainBinding
@@ -65,9 +71,11 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel>() 
         }
     }
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setSupportActionBar(mViewBinding.includeToolbarMain.toolbar)
+        fetchFirebaseData()
         setupListeners()
         setupSearch()
         addObservers()
@@ -76,6 +84,23 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel>() 
         mViewBinding.notesRecycler.adapter = notesAdapter
 
         viewModel.getAllNotes()
+    }
+
+    private fun fetchFirebaseData() {
+        val database = Firebase.database.reference
+        val notesRef = database.child("notes")
+        notesRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (noteSnapshot in dataSnapshot.children) {
+                    //TODO: Show notes
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.d("TAG", databaseError.message)
+            }
+        })
+
     }
 
     private fun addObservers() {
