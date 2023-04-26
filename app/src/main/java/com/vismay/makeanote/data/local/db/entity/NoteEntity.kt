@@ -1,9 +1,10 @@
 package com.vismay.makeanote.data.local.db.entity
 
-import android.os.Parcel
 import android.os.Parcelable
 import androidx.room.*
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 @Entity(tableName = "notes")
 data class NoteEntity(
     @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") val id: Int = 0,
@@ -11,31 +12,7 @@ data class NoteEntity(
     @ColumnInfo(name = "color") val color: Int = -1,
     @ColumnInfo(name = "date") val date: String?,
 ) : Parcelable {
-    constructor(parcel: Parcel) : this(
-        parcel.readInt(),
-        parcel.readString(),
-        parcel.readInt(),
-        parcel.readString()
-    )
-
-    override fun describeContents(): Int = 0
-
-    override fun writeToParcel(parcel: Parcel?, flags: Int) {
-        parcel?.writeInt(id)
-        parcel?.writeString(note)
-        parcel?.writeInt(color)
-        parcel?.writeString(date)
-    }
-
-    companion object CREATOR : Parcelable.Creator<NoteEntity> {
-        override fun createFromParcel(parcel: Parcel): NoteEntity {
-            return NoteEntity(parcel)
-        }
-
-        override fun newArray(size: Int): Array<NoteEntity?> {
-            return arrayOfNulls(size)
-        }
-    }
+    constructor() : this(0, null, -1, null)
 }
 
 @Entity(tableName = "notes_fts")

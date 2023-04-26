@@ -12,4 +12,7 @@
     <string name="all_no_note">Your notes appear here</string>
     <string name="all_no_result">No result found</string>
     <string name="menu_backup">Back Up</string>
+    <string name="title_cloud_backup">Cloud Backup</string>
+    <string name="all_sync">Sync</string>
+    <string name="all_logout">Logout</string>
 </resources>

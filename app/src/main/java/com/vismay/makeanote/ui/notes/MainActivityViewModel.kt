@@ -60,7 +60,7 @@ class MainActivityViewModel @Inject constructor(
 
     private fun sanitizeSearchQuery(query: Editable?): String {
         if (query == null) {
-            return "";
+            return ""
         }
         val queryWithEscapedQuotes = query.replace(Regex.fromLiteral("\""), "\"\"")
         return "*\"$queryWithEscapedQuotes\"*"

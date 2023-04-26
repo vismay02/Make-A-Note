@@ -34,7 +34,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
-
 @AndroidEntryPoint
 class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel>() {
 
@@ -71,7 +70,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel>() 
         }
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setSupportActionBar(mViewBinding.includeToolbarMain.toolbar)
@@ -92,7 +90,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel>() 
         notesRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 for (noteSnapshot in dataSnapshot.children) {
-                    //TODO: Show notes
+                    val note = noteSnapshot.getValue(NoteEntity::class.java)
+                    Log.d("TAG", "note: $note")
                 }
             }
 
