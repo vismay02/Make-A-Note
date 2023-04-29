@@ -6,11 +6,13 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -25,7 +27,6 @@ import com.vismay.makeanote.ui.oauth.LoginActivity
 import com.vismay.makeanote.utils.Constants
 import com.vismay.makeanote.utils.WrapContentLinearLayoutManager
 import com.vismay.makeanote.utils.extensions.ActivityExtension.hideKeyboard
-import com.vismay.makeanote.utils.extensions.ActivityExtension.launchActivity
 import com.vismay.makeanote.utils.extensions.ActivityExtension.showAlertDialog
 import com.vismay.makeanote.utils.extensions.ViewExtensions.clicks
 import com.vismay.makeanote.utils.extensions.ViewExtensions.onDone
@@ -36,6 +37,12 @@ import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel>() {
+
+    private val accountSyncLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { res ->
+        this.onAccountLoggedIn(res)
+    }
 
     private val getResult =
         registerForActivityResult(
@@ -84,22 +91,34 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel>() 
         viewModel.getAllNotes()
     }
 
+    private fun onAccountLoggedIn(res: ActivityResult) {
+
+    }
+
     private fun fetchFirebaseData() {
+        val authUser = FirebaseAuth.getInstance().currentUser
+
         val database = Firebase.database.reference
-        val notesRef = database.child("notes")
-        notesRef.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                for (noteSnapshot in dataSnapshot.children) {
-                    val note = noteSnapshot.getValue(NoteEntity::class.java)
-                    Log.d("TAG", "note: $note")
+        Log.d("TAG", "authUser: $authUser")
+
+        authUser?.run {
+            val notesRef = database.child("notes").child(authUser.uid)
+            Log.d("TAG", "notesRef: $notesRef")
+
+            notesRef.addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    for (noteSnapshot in dataSnapshot.children) {
+                        val note = noteSnapshot.getValue(NoteEntity::class.java)
+                        Log.d("TAG", "note: $note")
+
+                    }
                 }
-            }
 
-            override fun onCancelled(databaseError: DatabaseError) {
-                Log.d("TAG", databaseError.message)
-            }
-        })
-
+                override fun onCancelled(databaseError: DatabaseError) {
+                    Log.d("TAG", databaseError.message)
+                }
+            })
+        }
     }
 
     private fun addObservers() {
@@ -181,7 +200,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel>() 
     }
 
     private fun showSignInActivity() {
-        launchActivity<LoginActivity>()
+        accountSyncLauncher.launch(Intent(this, LoginActivity::class.java))
     }
 
     override fun getBinding(): ActivityMainBinding = ActivityMainBinding.inflate(layoutInflater)

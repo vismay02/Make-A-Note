@@ -9,6 +9,7 @@ import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.vismay.makeanote.R
@@ -20,10 +21,10 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel>() {
-
-    private val user by lazy {
-        FirebaseAuth.getInstance().currentUser
+    private val database by lazy {
+        Firebase.database.reference
     }
+
     private val signInLauncher = registerForActivityResult(
         FirebaseAuthUIActivityResultContract()
     ) { res ->
@@ -33,10 +34,16 @@ class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel>() {
     private fun onSignInResult(result: FirebaseAuthUIAuthenticationResult) {
         val response = result.idpResponse
         if (result.resultCode == RESULT_OK) {
+//            TODO: Show the progress dialog
+            mViewBinding.progressIndicatorSync.visibleGone(isGone = false)
+            val authUser = FirebaseAuth.getInstance().currentUser
             toggleView(true)
-            Log.d("TAG", "Email: ${user?.email} Name: ${user?.displayName}")
-            setUserDetails()
-            viewModel.getAllNotes()
+            authUser?.run {
+                val user = User(email, displayName)
+                database.child("users").child(uid).setValue(user)
+                setUserDetails(this)
+                viewModel.getAllNotes()
+            }
         } else {
             // Sign in failed. If response is null the user canceled the
             // sign-in flow using the back button. Otherwise check
@@ -47,12 +54,18 @@ class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel>() {
     }
 
     private fun uploadNotesToFirebase(notes: List<NoteEntity>) {
-        val database = Firebase.database.reference
-        val notesRef = database.child("notes")
-        notes.forEach {
-            val key = notesRef.push().key
-            if (key != null) {
-                notesRef.child(key).setValue(it)
+        val authUser = FirebaseAuth.getInstance().currentUser
+        authUser?.run {
+            val task = database.child("notes").child(uid).setValue(notes)
+            Log.d("TAG", "task isSuccessful: ${task.isSuccessful}")
+            Log.d("TAG", "task: $task")
+            task.addOnCompleteListener {
+                mViewBinding.progressIndicatorSync.visibleGone(isGone = true)
+                Log.d("TAG", "task result: ${task.result}")
+                Log.d("TAG", "task exception: ${task.exception}")
+
+            }.addOnCanceledListener {
+                Log.d("TAG", "uploadNotesToFirebase authUser: ${authUser.uid}")
             }
         }
     }
@@ -64,15 +77,16 @@ class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel>() {
         viewModel.getNotes.observe(this) {
             uploadNotesToFirebase(it)
         }
+        val authUser = FirebaseAuth.getInstance().currentUser
 
-        if (user != null && isLastAccountLoggedIn()) {
+        if (authUser != null && isLastAccountLoggedIn()) {
             toggleView(true)
-            setUserDetails()
+            setUserDetails(authUser)
         }
     }
 
-    private fun setUserDetails() {
-        user?.run {
+    private fun setUserDetails(authUser: FirebaseUser) {
+        authUser.run {
             mViewBinding.textViewUserEmail.text = email
             mViewBinding.textViewUserName.text = displayName
         }
@@ -102,7 +116,8 @@ class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel>() {
         }
 
         mViewBinding.buttonSyncNotes.setOnClickListener {
-
+            mViewBinding.progressIndicatorSync.visibleGone(isGone = false)
+            viewModel.getAllNotes()
         }
 
         mViewBinding.buttonLogout.setOnClickListener {

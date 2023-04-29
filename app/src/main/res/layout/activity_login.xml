@@ -24,6 +24,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/progress_indicator_sync"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:visibility="gone"
+        app:hideAnimationBehavior="outward"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/include_toolbar_main"
+        app:showAnimationBehavior="inward" />
+
     <com.google.android.gms.common.SignInButton
         android:id="@+id/button_google_sign_in"
         android:layout_width="0dp"
