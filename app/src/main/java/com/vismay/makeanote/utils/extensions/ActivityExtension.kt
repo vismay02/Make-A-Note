@@ -4,14 +4,11 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
-import kotlinx.android.synthetic.main.dialog_alert.*
+import com.vismay.makeanote.databinding.DialogAlertBinding
 
 object ActivityExtension {
 
@@ -27,24 +24,25 @@ object ActivityExtension {
     inline fun <reified T : Any> newIntent(context: Context): Intent =
         Intent(context, T::class.java)
 
-    fun AppCompatActivity.showAlertDialog(
-        @LayoutRes layoutResource: Int,
-        onPositiveButtonClick: () -> Unit
-    ) {
-        this.let {
-            val builder = AlertDialog.Builder(it)
-            val viewGroup: ViewGroup = it.findViewById(android.R.id.content)
-            val dialogView: View =
-                LayoutInflater.from(it)
-                    .inflate(layoutResource, viewGroup, false)
-            builder.setView(dialogView)
+    fun AppCompatActivity.showAlertDialog(onPositiveButtonClick: () -> Unit) {
+        this.let { activity ->
+
+            val builder = AlertDialog.Builder(activity)
+
+            // Use ViewBinding instead of inflating the layout manually
+            val binding = DialogAlertBinding.inflate(LayoutInflater.from(activity))
+
+            builder.setView(binding.root)
             val alertDialog = builder.create()
             alertDialog.show()
-            alertDialog.button_positive.setOnClickListener {
+
+            // Access buttons using ViewBinding
+            binding.buttonPositive.setOnClickListener {
                 onPositiveButtonClick()
                 alertDialog.dismiss()
             }
-            alertDialog.button_negative.setOnClickListener {
+
+            binding.buttonNegative.setOnClickListener {
                 alertDialog.dismiss()
             }
         }

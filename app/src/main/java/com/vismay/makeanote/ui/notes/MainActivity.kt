@@ -3,7 +3,6 @@ package com.vismay.makeanote.ui.notes
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.result.ActivityResult
@@ -68,7 +67,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel>() 
             hideKeyboard()
             mViewBinding.editTextSearch.clearFocus()
             if (noteClick.second) {
-                showAlertDialog(R.layout.dialog_alert) {
+                showAlertDialog {
                     viewModel.deleteNote(noteClick.first, noteClick.third)
                 }
             } else {
@@ -99,23 +98,19 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel>() 
         val authUser = FirebaseAuth.getInstance().currentUser
 
         val database = Firebase.database.reference
-        Log.d("TAG", "authUser: $authUser")
 
         authUser?.run {
             val notesRef = database.child("notes").child(authUser.uid)
-            Log.d("TAG", "notesRef: $notesRef")
 
             notesRef.addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     for (noteSnapshot in dataSnapshot.children) {
                         val note = noteSnapshot.getValue(NoteEntity::class.java)
-                        Log.d("TAG", "note: $note")
 
                     }
                 }
 
                 override fun onCancelled(databaseError: DatabaseError) {
-                    Log.d("TAG", databaseError.message)
                 }
             })
         }

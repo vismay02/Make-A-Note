@@ -2,7 +2,6 @@ package com.vismay.makeanote.ui.oauth
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.viewModels
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
@@ -48,7 +47,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel>() {
             // Sign in failed. If response is null the user canceled the
             // sign-in flow using the back button. Otherwise check
             // response.getError().getErrorCode() and handle the error.
-            Log.d("TAG", "Sign in failed!!! >> $response")
             toggleView()
         }
     }
@@ -57,15 +55,10 @@ class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel>() {
         val authUser = FirebaseAuth.getInstance().currentUser
         authUser?.run {
             val task = database.child("notes").child(uid).setValue(notes)
-            Log.d("TAG", "task isSuccessful: ${task.isSuccessful}")
-            Log.d("TAG", "task: $task")
             task.addOnCompleteListener {
                 mViewBinding.progressIndicatorSync.visibleGone(isGone = true)
-                Log.d("TAG", "task result: ${task.result}")
-                Log.d("TAG", "task exception: ${task.exception}")
 
             }.addOnCanceledListener {
-                Log.d("TAG", "uploadNotesToFirebase authUser: ${authUser.uid}")
             }
         }
     }
@@ -124,7 +117,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel>() {
             AuthUI.getInstance()
                 .signOut(this)
                 .addOnCompleteListener {
-                    Log.d("TAG", "it.isSuccessful: ${it.isSuccessful}")
                     toggleView()
                 }
         }

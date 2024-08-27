@@ -2,17 +2,16 @@ package com.vismay.makeanote.data.local.db.entity
 
 import android.os.Parcelable
 import androidx.room.*
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 @Entity(tableName = "notes")
 data class NoteEntity(
-    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") val id: Int = 0,
-    @ColumnInfo(name = "note") val note: String? =null,
-    @ColumnInfo(name = "color") val color: Int = -1,
-    @ColumnInfo(name = "date") val date: String? = null,
-) : Parcelable {
-}
+    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") var id: Int = 0,
+    @ColumnInfo(name = "note") var note: String? =null,
+    @ColumnInfo(name = "color") var color: Int = -1,
+    @ColumnInfo(name = "date") var date: String? = null,
+) : Parcelable
 
 @Entity(tableName = "notes_fts")
 @Fts4(contentEntity = NoteEntity::class)

@@ -7,22 +7,22 @@ import com.vismay.makeanote.data.local.db.entity.NoteEntity
 @Dao
 interface NoteDao {
     @Query("SELECT * FROM notes")
-    suspend fun getAllNotes(): List<NoteEntity>
+     fun getAllNotes(): List<NoteEntity>
 
     @Insert
-    suspend fun insertNote(note: NoteEntity)
+     fun insertNote(note: NoteEntity)
 
     @Delete
-    suspend fun deleteNote(note: NoteEntity)
+     fun deleteNote(note: NoteEntity)
 
     @Update
-    suspend fun updateNote(note: NoteEntity)
+     fun updateNote(note: NoteEntity)
 
     @Query("SELECT * FROM notes WHERE id is :id")
-    suspend fun fetchUpdatedNote(id: Int): NoteEntity
+     fun fetchUpdatedNote(id: Int): NoteEntity
 
     @Query("SELECT * FROM notes ORDER BY id DESC LIMIT 1")
-    suspend fun fetchNewNote(): NoteEntity
+     fun fetchNewNote(): NoteEntity
 
     @Query(
         """
@@ -32,7 +32,7 @@ interface NoteDao {
   WHERE notes_fts MATCH :query
   """
     )
-    suspend fun search(query: String): List<NoteEntity>
+     fun search(query: String): List<NoteEntity>
 
     @Query(
         """
@@ -42,5 +42,5 @@ interface NoteDao {
     WHERE notes_fts MATCH :query
   """
     )
-    suspend fun searchWithMatchInfo(query: String): List<LaunchWithMatchInfo>
+     fun searchWithMatchInfo(query: String): List<LaunchWithMatchInfo>
 }
