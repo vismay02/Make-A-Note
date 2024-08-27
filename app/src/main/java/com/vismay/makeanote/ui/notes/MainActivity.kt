@@ -5,24 +5,16 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
 import com.vismay.makeanote.R
 import com.vismay.makeanote.data.local.db.entity.NoteEntity
 import com.vismay.makeanote.databinding.ActivityMainBinding
 import com.vismay.makeanote.ui.base.BaseActivity
 import com.vismay.makeanote.ui.createupdatenote.CreateUpdateNoteActivity
-import com.vismay.makeanote.ui.oauth.LoginActivity
 import com.vismay.makeanote.utils.Constants
 import com.vismay.makeanote.utils.WrapContentLinearLayoutManager
 import com.vismay.makeanote.utils.extensions.ActivityExtension.hideKeyboard
@@ -36,12 +28,6 @@ import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel>() {
-
-    private val accountSyncLauncher = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) { res ->
-        this.onAccountLoggedIn(res)
-    }
 
     private val getResult =
         registerForActivityResult(
@@ -79,7 +65,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel>() 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setSupportActionBar(mViewBinding.includeToolbarMain.toolbar)
-        fetchFirebaseData()
         setupListeners()
         setupSearch()
         addObservers()
@@ -88,32 +73,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel>() 
         mViewBinding.notesRecycler.adapter = notesAdapter
 
         viewModel.getAllNotes()
-    }
-
-    private fun onAccountLoggedIn(res: ActivityResult) {
-
-    }
-
-    private fun fetchFirebaseData() {
-        val authUser = FirebaseAuth.getInstance().currentUser
-
-        val database = Firebase.database.reference
-
-        authUser?.run {
-            val notesRef = database.child("notes").child(authUser.uid)
-
-            notesRef.addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    for (noteSnapshot in dataSnapshot.children) {
-                        val note = noteSnapshot.getValue(NoteEntity::class.java)
-
-                    }
-                }
-
-                override fun onCancelled(databaseError: DatabaseError) {
-                }
-            })
-        }
     }
 
     private fun addObservers() {
@@ -187,15 +146,10 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainActivityViewModel>() 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.backup_notes -> {
-                showSignInActivity()
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
-    }
-
-    private fun showSignInActivity() {
-        accountSyncLauncher.launch(Intent(this, LoginActivity::class.java))
     }
 
     override fun getBinding(): ActivityMainBinding = ActivityMainBinding.inflate(layoutInflater)
