@@ -15,4 +15,5 @@
     <string name="title_cloud_backup">Cloud Backup</string>
     <string name="all_sync">Sync</string>
     <string name="all_logout">Logout</string>
+    <string name="title_activity_main">MainActivity</string>
 </resources>

@@ -43,6 +43,9 @@ ext {
 
     compose_core_version = "1.6.8"
     compose_constraint_layout_version = "1.0.1"
+    compose_material_3_version = "1.2.1"
+    compose_nav_version = "2.7.7"
+    compose_activity_version = "1.9.1"
 }
 
 task clean(type: Delete) {
